@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Scale Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0c0c0c;
+    --surface:   #161616;
+    --surface-2: #1f1f1f;
+    --border:    rgba(255,255,255,0.07);
+    --text:      rgba(255,255,255,0.88);
+    --muted:     rgba(255,255,255,0.32);
+    --accent:    #10d9a0;
+    --accent-fg: #021f18;
+    --danger:    #f87171;
+    color-scheme: dark;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04";
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    background:
+      radial-gradient(ellipse 70% 55% at 4% -5%,  rgba(99,60,220,0.22) 0%, transparent 65%),
+      radial-gradient(ellipse 55% 45% at 97% 108%, rgba(16,217,160,0.12) 0%, transparent 65%),
+      var(--bg);
+    background-attachment: fixed;
+  }
+  body {
+    margin: 0;
+    background: transparent;
+    color: var(--text);
+    min-height: 100dvh;
+  }
+
+  /* ── Header ── */
+  .app-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(10,10,10,0.82);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(16,217,160,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+  }
+  .app-title {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  main {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 14px 14px 80px;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: linear-gradient(155deg, #1c1c1c 0%, #141414 100%);
+    border: 1px solid rgba(16,217,160,0.14);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 8px;
+    box-shadow:
+      0 0 0 1px rgba(16,217,160,0.05) inset,
+      0 0 28px rgba(16,217,160,0.03),
+      0 2px 10px rgba(0,0,0,0.45);
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  .card:focus-within {
+    border-color: rgba(16,217,160,0.32);
+    box-shadow:
+      0 0 0 1px rgba(16,217,160,0.09) inset,
+      0 0 22px rgba(16,217,160,0.07),
+      0 2px 10px rgba(0,0,0,0.45);
+  }
+  .card-label {
+    font-size: 0.67rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 12px;
+  }
+
+  /* ── Scale picker ── */
+  .scale-row {
+    display: flex;
+    gap: 10px;
+  }
+  .scale-field { flex: 1; min-width: 0; }
+  .scale-field label {
+    display: block;
+    font-size: 0.67rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  select {
+    width: 100%;
+    padding: 9px 30px 9px 11px;
+    font-size: 0.9rem;
+    font-weight: 400;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(255,255,255,0.3)' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 11px center;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  select.inline-select {
+    width: auto;
+    padding: 5px 24px 5px 9px;
+    font-size: 0.82rem;
+  }
+  select option.unavailable { color: var(--danger); }
+  .scale-unavailable-msg {
+    color: var(--danger);
+    font-size: 0.82rem;
+    margin: 10px 0 0;
+    line-height: 1.4;
+  }
+
+  /* ── Collapsible (Scale Info / Settings) ── */
+  details.card summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    user-select: none;
+  }
+  details.card summary::-webkit-details-marker { display: none; }
+  details.card summary .summary-label {
+    font-size: 0.67rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  details.card > summary::after {
+    content: "\25BC";
+    color: var(--muted);
+    font-size: 0.55rem;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+    display: inline-block;
+  }
+  details.card[open] > summary::after { transform: rotate(180deg); }
+  details.card[open] > summary { margin-bottom: 12px; }
+
+  /* ── Toggle rows ── */
+  .toggle-list {
+    border-top: 1px solid var(--border);
+    padding-top: 0;
+  }
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+  .toggle-row:last-child { border-bottom: none; }
+  .toggle-row .toggle-label { font-size: 0.9rem; color: var(--text); }
+  .switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider-bg {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: var(--border);
+    border-radius: 24px;
+    transition: background 0.2s;
+  }
+  .slider-bg::before {
+    content: "";
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+  input:checked + .slider-bg { background: var(--accent); }
+  input:checked + .slider-bg::before { transform: translateX(20px); }
+
+  /* ── Tempo ── */
+  .tempo-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .tempo-header .card-label { margin: 0; }
+  .tempo-right { display: flex; align-items: center; gap: 10px; }
+  .tempo-display {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .tempo-display .bpm-unit {
+    font-size: 0.67rem;
+    font-weight: 500;
+    color: var(--muted);
+    margin-left: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+  .btn-tap {
+    padding: 6px 12px;
+    border-radius: 5px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.67rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.1s, transform 0.06s;
+    flex-shrink: 0;
+    font-family: inherit;
+  }
+  .btn-tap:active { transform: scale(0.94); background: var(--accent); color: var(--accent-fg); }
+  input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
+    cursor: pointer;
+    height: 4px;
+  }
+  .swing-row { flex-direction: column; align-items: stretch; gap: 6px; }
+  .swing-header { display: flex; align-items: center; justify-content: space-between; }
+  .swing-readout { font-size: 0.82rem; color: var(--accent); font-weight: 600; }
+
+  /* ── Beat dots ── */
+  .beat-dots {
+    display: flex; gap: 10px; align-items: center; justify-content: center;
+    padding: 10px 0 2px;
+  }
+  .beat-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    transition: none;
+  }
+  @keyframes beat-flash {
+    0%   { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+    55%  { background: var(--accent); box-shadow: 0 0 3px var(--accent); }
+    100% { background: rgba(255,255,255,0.1); box-shadow: none; }
+  }
+  .beat-dot.lit { animation: beat-flash 0.3s forwards; }
+
+  /* ── Beat grid (metronome accent) ── */
+  .beat-grid { display: flex; gap: 7px; }
+  .beat-cell {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 5px; cursor: pointer; user-select: none; flex: 1;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .beat-cell-bar {
+    width: 100%; height: 48px; border-radius: 4px;
+    border: 1px solid var(--border); overflow: hidden;
+    position: relative; transition: border-color 0.12s;
+  }
+  .beat-cell-fill {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    border-radius: 3px; transition: height 0.12s, background 0.12s;
+  }
+  .beat-cell[data-level="3"] .beat-cell-bar  { border-color: var(--accent); }
+  .beat-cell[data-level="3"] .beat-cell-fill { height: 100%; background: var(--accent); }
+  .beat-cell[data-level="2"] .beat-cell-fill { height: 62%; background: var(--muted); }
+  .beat-cell[data-level="1"] .beat-cell-fill { height: 26%; background: var(--muted); opacity: 0.5; }
+  .beat-cell[data-level="0"] .beat-cell-fill { height: 0; }
+  .beat-cell-num { font-size: 0.7rem; color: var(--muted); font-weight: 700; line-height: 1; }
+
+  /* ── Style preset pills ── */
+  .preset-row {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .preset-pill {
+    padding: 4px 10px; font-size: 0.72rem; font-weight: 500;
+    border-radius: 5px; background: transparent;
+    border: 1px solid var(--border); color: var(--muted);
+    white-space: nowrap; cursor: pointer; font-family: inherit;
+    transition: background 0.12s, color 0.12s, border-color 0.12s;
+  }
+  .preset-pill.active { background: var(--accent); color: var(--accent-fg); border-color: transparent; }
+  .preset-pill:not(.active):hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+
+  /* ── Click sound + toggle inline ── */
+  .click-controls { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+
+  /* ── Metronome toggle-row variants ── */
+  .stacked-row { flex-direction: column; align-items: stretch; gap: 8px; }
+
+  /* ── Section selector ── */
+  .sections-card { padding: 4px 16px; }
+  .section-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-row:last-child { border-bottom: none; }
+  .section-meta {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 100px;
+    flex-shrink: 0;
+  }
+  .section-clef {
+    font-size: 1.2rem;
+    line-height: 1;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .section-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .hand-icon { font-size: 0.95rem; line-height: 1; }
+  .section-pills {
+    display: flex;
+    gap: 5px;
+    flex: 1;
+    justify-content: flex-end;
+  }
+  button {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .pill {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 5px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.12s, color 0.12s, border-color 0.12s;
+    flex-shrink: 0;
+  }
+  .pill.active {
+    background: var(--accent);
+    color: var(--accent-fg);
+    border-color: transparent;
+  }
+  .pill:not(.active):hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+  button:disabled { opacity: 0.38; cursor: default; }
+
+  /* ── Transport ── */
+  .transport {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    flex-shrink: 0;
+    border-radius: 7px;
+    background: linear-gradient(155deg, #1c1c1c 0%, #141414 100%);
+    border: 1px solid rgba(16,217,160,0.14);
+    color: var(--muted);
+    transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .btn-icon:not(:disabled):hover {
+    background: linear-gradient(155deg, #222 0%, #181818 100%);
+    border-color: rgba(16,217,160,0.3);
+    color: var(--text);
+    box-shadow: 0 0 12px rgba(16,217,160,0.08), 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .btn-icon.active {
+    background: var(--accent);
+    color: var(--accent-fg);
+    border-color: transparent;
+  }
+  #play-btn {
+    flex: 1;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 7px;
+    background: var(--accent);
+    color: var(--accent-fg);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    box-shadow: 0 0 20px rgba(16,217,160,0.25), 0 2px 8px rgba(0,0,0,0.4);
+    transition: filter 0.12s, box-shadow 0.12s;
+  }
+  #play-btn:not(:disabled):hover {
+    filter: brightness(1.06);
+    box-shadow: 0 0 28px rgba(16,217,160,0.38), 0 2px 8px rgba(0,0,0,0.4);
+  }
+  #stop-btn { color: var(--danger); }
+  #stop-btn:not(:disabled):hover {
+    background: rgba(248,113,113,0.1);
+    border-color: rgba(248,113,113,0.25);
+    color: var(--danger);
+  }
+
+  /* ── Status ── */
+  #status {
+    text-align: center;
+    min-height: 48px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+  #status-label {
+    font-size: 0.67rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  #status-big {
+    display: block;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  /* ── Piano roll ── */
+  .visual-label {
+    font-size: 0.67rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 10px;
+  }
+  .piano-roll-wrap {
+    position: relative;
+    padding: 40px 0;
+  }
+  .piano-roll-cross-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    overflow: visible;
+  }
+  .piano-roll-board {
+    position: relative;
+    display: flex;
+    height: 120px;
+    background: #080808;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .piano-roll-white-row { display: flex; width: 100%; height: 100%; }
+  .piano-key {
+    position: relative;
+    border: 1px solid #2d2f3b;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    transition: background-color 0.08s linear;
+  }
+  .piano-key.white {
+    flex: 1;
+    background: #e8e8ec;
+    height: 100%;
+    z-index: 1;
+    padding-bottom: 6px;
+  }
+  .piano-key.black {
+    position: absolute;
+    top: 0;
+    height: 62%;
+    background: #1a1b22;
+    z-index: 2;
+    border-radius: 0 0 3px 3px;
+    padding-bottom: 4px;
+  }
+  .piano-key.active { background: #e53935 !important; }
+  .piano-key .key-finger,
+  .piano-key .key-note,
+  .piano-key .key-degree {
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: #14151a;
+    pointer-events: none;
+  }
+  .piano-key.black .key-finger,
+  .piano-key.black .key-note,
+  .piano-key.black .key-degree { color: #f0f0f0; font-size: 0.65rem; }
+  .piano-key:not(.active) .key-finger,
+  .piano-key:not(.active) .key-note,
+  .piano-key:not(.active) .key-degree { color: transparent; }
+
+  /* ── Sheet music ── */
+  .sheet-music-section { width: 100%; }
+  .sheet-music-scroller {
+    width: 100%;
+    overflow-x: auto;
+    background: #f5f5f0;
+    border-radius: 5px;
+  }
+  .sheet-music-scroller svg { display: block; overflow: visible; }
+  .sheet-music-playhead { stroke: #e53935; stroke-width: 3; }
+  .sheet-music-error { color: var(--muted); font-size: 0.9rem; margin: 0; }
+
+  /* ── Cross arcs ── */
+  .cross-arc, .sheet-music-cross {
+    fill: none;
+    stroke-linecap: round;
+    stroke-dasharray: 10 6;
+    animation: cross-flow 1.4s ease-in-out forwards;
+  }
+  .cross-arc { stroke-width: 4; }
+  .sheet-music-cross { stroke-width: 2.5; }
+  .cross-arc.cross-over, .sheet-music-cross.cross-over { stroke: #ffb74d; }
+  .cross-arc.cross-under, .sheet-music-cross.cross-under { stroke: #4fc3f7; }
+  @keyframes cross-flow {
+    0%   { opacity: 0; stroke-dashoffset: 80; }
+    15%  { opacity: 1; }
+    85%  { opacity: 1; stroke-dashoffset: 0; }
+    100% { opacity: 0; }
+  }
+
+  /* ── Scale info ── */
+  .scale-info-type {
+    font-size: 0.67rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 8px;
+  }
+  .scale-info-pattern { margin: 0 0 10px; }
+  .pattern-step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    margin-right: 3px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.78rem;
+    background: var(--surface-2);
+    color: var(--text);
+  }
+  .pattern-step.half { background: var(--accent); color: var(--accent-fg); }
+  .scale-info-notes { margin: 0 0 10px; font-size: 0.92rem; color: var(--text); }
+  .scale-info-notes .tonic-note { color: var(--accent); font-weight: 700; }
+  .scale-info-desc {
+    margin: 0 0 12px;
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .scale-info-board .piano-key.white.scale-note { background: #8ecbff; }
+  .scale-info-board .piano-key.black.scale-note { background: #1e5b8c; }
+  .scale-info-board .piano-key.white.scale-note.tonic { background: var(--accent); }
+  .scale-info-board .piano-key.black.scale-note.tonic { background: #2e7d4f; }
+  .scale-info-board .piano-key.scale-note .key-note,
+  .scale-info-board .piano-key.scale-note .key-degree { color: #14151a; }
+  .scale-info-board .piano-key.black.scale-note .key-note,
+  .scale-info-board .piano-key.black.scale-note .key-degree { color: #f0f0f0; }
+  .scale-info-board .key-degree { font-size: 0.6rem; opacity: 0.8; }
+  .scale-info-caption { margin: 10px 0 0; font-size: 0.78rem; color: var(--muted); }
+  .scale-info-caption .legend-swatch {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    margin: 0 4px 0 10px;
+    vertical-align: middle;
+  }
+  .scale-info-caption .legend-swatch:first-child { margin-left: 0; }
+  .scale-info-caption .legend-swatch.tonic { background: var(--accent); }
+  .scale-info-caption .legend-swatch.other { background: #8ecbff; }
+  /* ── Theory pager ── */
+  .theory-pager { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; }
+  .theory-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .theory-title { font-size: 0.67rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+  .theory-nav {
+    background: none; border: 1px solid var(--border); color: var(--muted);
+    border-radius: 5px; width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 0.85rem; padding: 0; font-family: inherit;
+    transition: color 0.12s, border-color 0.12s;
+  }
+  .theory-nav:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+  .theory-content { min-height: 72px; }
+  .theory-last { margin-bottom: 0; }
+  .theory-dots { display: flex; gap: 5px; justify-content: center; margin-top: 12px; }
+  .theory-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--border); cursor: pointer; transition: background 0.15s;
+  }
+  .theory-dot.active { background: var(--accent); }
+
+  /* Chord grid */
+  .theory-chord-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 8px; }
+  .theory-chord {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 6px 2px; border-radius: 4px; border: 1px solid var(--border); gap: 2px;
+  }
+  .theory-chord.theory-chord-major { border-color: rgba(16,217,160,0.28); background: rgba(16,217,160,0.04); }
+  .theory-chord.theory-chord-dim { opacity: 0.6; }
+  .chord-roman { font-size: 0.6rem; font-weight: 600; color: var(--muted); }
+  .chord-name { font-size: 0.75rem; font-weight: 600; color: var(--text); }
+  .chord-qual { font-size: 0.65rem; color: var(--muted); }
+
+  /* Mode list */
+  .theory-mode-list { display: flex; flex-direction: column; gap: 5px; }
+  .theory-mode-row { display: grid; grid-template-columns: 22px 1fr auto auto; align-items: center; gap: 8px; }
+  .mode-note { font-weight: 700; font-size: 0.82rem; color: var(--accent); }
+  .mode-name { font-size: 0.8rem; font-weight: 500; color: var(--text); }
+  .mode-quality { font-size: 0.65rem; padding: 1px 5px; border-radius: 3px; border: 1px solid var(--border); text-transform: capitalize; }
+  .mode-quality.mode-major { color: var(--accent); border-color: rgba(16,217,160,0.28); }
+  .mode-quality.mode-minor { color: var(--muted); }
+  .mode-quality.mode-diminished { color: var(--danger); border-color: rgba(248,113,113,0.28); }
+  .mode-vibe { font-size: 0.67rem; color: var(--muted); }
+
+  /* Key info */
+  .theory-key-grid { display: flex; flex-direction: column; gap: 0; }
+  .theory-key-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 7px 0; border-bottom: 1px solid var(--border);
+  }
+  .theory-key-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .theory-key-label { font-size: 0.67rem; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+  .theory-key-value { font-size: 0.82rem; color: var(--text); font-weight: 500; }
+  .theory-genres { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; max-width: 65%; }
+  .theory-genre { font-size: 0.65rem; padding: 2px 6px; border-radius: 3px; border: 1px solid var(--border); color: var(--muted); }
+  .theory-note { font-size: 0.7rem; color: var(--muted); margin: 6px 0 0; }
+
+  /* Scale degrees */
+  .theory-degree-list { display: flex; flex-direction: column; gap: 2px; }
+  .theory-degree-row {
+    display: grid; grid-template-columns: 18px 30px 38px 1fr 1fr;
+    gap: 6px; align-items: center;
+    padding: 5px 0; border-bottom: 1px solid var(--border);
+  }
+  .theory-degree-row:last-child { border-bottom: none; }
+  .deg-num  { font-size: 0.62rem; font-weight: 700; color: var(--accent); text-align: center; }
+  .deg-note { font-size: 0.8rem;  font-weight: 600; color: var(--text); }
+  .deg-sol  { font-size: 0.72rem; font-style: italic; color: var(--muted); }
+  .deg-name { font-size: 0.65rem; color: var(--text); font-weight: 500; }
+  .deg-fn   { font-size: 0.6rem;  color: var(--muted); text-align: right; }
+
+  /* Pentatonic */
+  .theory-penta-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+  .penta-note {
+    padding: 4px 9px; border-radius: 5px;
+    font-size: 0.78rem; font-weight: 600; transition: opacity 0.15s;
+  }
+  .penta-note.in  { background: rgba(16,217,160,0.1); border: 1px solid rgba(16,217,160,0.28); color: var(--accent); }
+  .penta-note.out { background: var(--surface-2); border: 1px solid var(--border); color: var(--muted); opacity: 0.45; text-decoration: line-through; }
+
+  /* Progressions */
+  .theory-prog-list { display: flex; flex-direction: column; gap: 6px; }
+  .theory-prog-item { display: flex; flex-direction: column; gap: 3px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .theory-prog-item:last-child { border-bottom: none; }
+  .prog-top { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+  .prog-roman { font-size: 0.65rem; font-weight: 700; color: var(--muted); letter-spacing: 0.04em; }
+  .prog-genre { font-size: 0.6rem; color: var(--muted); }
+  .prog-chords { display: flex; gap: 4px; flex-wrap: wrap; }
+  .prog-chord {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 2px 8px;
+    font-size: 0.75rem; font-weight: 600; color: var(--text);
+  }
+
+  /* ── Themes ── */
+  html[data-theme="light"] {
+    --bg:        #f4f4f2;
+    --surface:   #ffffff;
+    --surface-2: #ebebea;
+    --border:    rgba(0,0,0,0.08);
+    --text:      rgba(0,0,0,0.88);
+    --muted:     rgba(0,0,0,0.40);
+    --accent:    #059669;
+    --accent-fg: #ecfdf5;
+    --danger:    #dc2626;
+    color-scheme: light;
+    background: #f4f4f2;
+  }
+  html[data-theme="light"] .app-header { background: rgba(244,244,242,0.92); border-bottom-color: rgba(5,150,105,0.15); }
+  html[data-theme="light"] .piano-roll-board { background: #d0d0ce; }
+  html[data-theme="light"] .card {
+    background: linear-gradient(155deg, #fff 0%, #f8f8f6 100%);
+    border-color: rgba(5,150,105,0.18);
+    box-shadow: 0 0 0 1px rgba(5,150,105,0.06) inset, 0 2px 10px rgba(0,0,0,0.08);
+  }
+  html[data-theme="light"] .card:focus-within {
+    border-color: rgba(5,150,105,0.36);
+    box-shadow: 0 0 0 1px rgba(5,150,105,0.1) inset, 0 0 18px rgba(5,150,105,0.08), 0 2px 10px rgba(0,0,0,0.08);
+  }
+  html[data-theme="light"] .btn-icon {
+    background: linear-gradient(155deg, #fff 0%, #f4f4f2 100%);
+    border-color: rgba(5,150,105,0.18);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  html[data-theme="light"] .btn-icon:not(:disabled):hover {
+    border-color: rgba(5,150,105,0.36);
+    background: #fff;
+  }
+  html[data-theme="light"] #play-btn { box-shadow: 0 0 16px rgba(5,150,105,0.3), 0 2px 6px rgba(0,0,0,0.12); }
+  html[data-theme="light"] html {
+    background:
+      radial-gradient(ellipse 70% 55% at 4% -5%,  rgba(99,60,220,0.07) 0%, transparent 65%),
+      radial-gradient(ellipse 55% 45% at 97% 108%, rgba(5,150,105,0.06) 0%, transparent 65%),
+      #f4f4f2;
+  }
+  html[data-theme="light"] select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(0,0,0,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  html[data-theme="hc"] {
+    --bg:        #000000;
+    --surface:   #0a0a0a;
+    --surface-2: #141414;
+    --border:    rgba(255,255,255,0.22);
+    --text:      #ffffff;
+    --muted:     rgba(255,255,255,0.60);
+    --accent:    #00ff88;
+    --accent-fg: #000000;
+    --danger:    #ff5555;
+    color-scheme: dark;
+    background: #000;
+  }
+  html[data-theme="hc"] .app-header { background: rgba(0,0,0,0.97); border-bottom-color: rgba(0,255,136,0.25); }
+  html[data-theme="hc"] .card {
+    background: #0a0a0a;
+    border: 1.5px solid rgba(0,255,136,0.28);
+    box-shadow: 0 0 0 1px rgba(0,255,136,0.08) inset, 0 0 24px rgba(0,255,136,0.05);
+  }
+  html[data-theme="hc"] .card:focus-within {
+    border-color: rgba(0,255,136,0.55);
+    box-shadow: 0 0 0 1px rgba(0,255,136,0.14) inset, 0 0 20px rgba(0,255,136,0.12);
+  }
+  html[data-theme="hc"] .btn-icon { background: #0a0a0a; border: 1.5px solid rgba(0,255,136,0.28); }
+  html[data-theme="hc"] .btn-icon:not(:disabled):hover { border-color: rgba(0,255,136,0.6); }
+  html[data-theme="hc"] #play-btn { box-shadow: 0 0 24px rgba(0,255,136,0.4), 0 2px 8px rgba(0,0,0,0.5); }
+  html[data-theme="hc"] .beat-dot { background: rgba(255,255,255,0.2); }
+
+  /* Theme selector pills */
+  .theme-row { flex-direction: column; align-items: stretch; gap: 8px; }
+  .theme-pills { display: flex; gap: 6px; }
+  .theme-pill {
+    flex: 1; padding: 6px 4px; font-size: 0.72rem; font-weight: 500;
+    border-radius: 5px; background: transparent;
+    border: 1px solid var(--border); color: var(--muted);
+    cursor: pointer; font-family: inherit; text-align: center;
+    transition: background 0.12s, color 0.12s, border-color 0.12s;
+  }
+  .theme-pill.active { background: var(--accent); color: var(--accent-fg); border-color: transparent; }
+  .theme-pill:not(.active):hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+  html[data-theme="light"] .theme-pill:not(.active):hover { border-color: rgba(0,0,0,0.18); }
+
+  /* ── Stat boxes (pre-count / speed ramp / timer) ── */
+  .stat-row { display: flex; gap: 6px; margin-bottom: 8px; }
+  .stat-box {
+    flex: 1; min-width: 0;
+    background: linear-gradient(155deg, #1c1c1c 0%, #141414 100%);
+    border: 1px solid rgba(16,217,160,0.14);
+    border-radius: 7px;
+    padding: 5px 8px 6px;
+    display: flex; flex-direction: column; gap: 3px;
+    box-shadow: 0 0 0 1px rgba(16,217,160,0.05) inset, 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .stat-box-label {
+    font-size: 0.52rem; font-weight: 700; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--muted); line-height: 1;
+  }
+  .stat-box-body {
+    display: flex; align-items: center; justify-content: space-between; gap: 4px;
+  }
+  .stat-value {
+    font-size: 0.78rem; font-weight: 600; color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+  .timer-val { color: var(--accent); font-size: 0.9rem; letter-spacing: 0.03em; }
+  .timer-controls { display: flex; align-items: center; gap: 2px; }
+  .timer-btn {
+    background: none; border: none; padding: 2px 3px; cursor: pointer;
+    color: var(--muted); font-size: 0.6rem; line-height: 1;
+    border-radius: 3px; transition: color 0.15s, background 0.15s;
+  }
+  .timer-btn:hover { color: var(--accent); background: rgba(16,217,160,0.08); }
+  .ramp-config {
+    display: flex; align-items: center; gap: 2px; flex-wrap: wrap;
+    font-size: 0.66rem; font-weight: 500; color: var(--text);
+  }
+  .stat-num {
+    width: 22px; background: var(--surface-2);
+    border: 1px solid var(--border); border-radius: 3px;
+    color: var(--text); font-size: 0.66rem; font-weight: 600;
+    text-align: center; padding: 1px 0; font-family: inherit;
+    -moz-appearance: textfield; appearance: textfield;
+  }
+  .stat-num::-webkit-outer-spin-button,
+  .stat-num::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  html[data-theme="light"] .stat-box {
+    background: linear-gradient(155deg, #fff 0%, #f8f8f6 100%);
+    border-color: rgba(5,150,105,0.18);
+    box-shadow: 0 0 0 1px rgba(5,150,105,0.05) inset, 0 2px 6px rgba(0,0,0,0.07);
+  }
+  html[data-theme="light"] .timer-btn { color: rgba(0,0,0,0.32); }
+  html[data-theme="hc"] .stat-box {
+    background: #0a0a0a; border: 1.5px solid rgba(0,255,136,0.28);
+  }
+</style>
+</head>
+<body>
+<header class="app-header">
+  <p class="app-title">Scale Practice</p>
+</header>
+
+<main>
+
+  <!-- Scale picker -->
+  <div class="card">
+    <div class="scale-row">
+      <div class="scale-field">
+        <label for="scale-select">Note</label>
+        <select id="scale-select"></select>
+      </div>
+      <div class="scale-field">
+        <label for="scale-type-select">Type</label>
+        <select id="scale-type-select"></select>
+      </div>
+    </div>
+    <p id="scale-unavailable-msg" class="scale-unavailable-msg" style="display:none;">
+      This scale isn't available yet — try C or D Major.
+    </p>
+  </div>
+
+  <!-- Scale info -->
+  <details class="card">
+    <summary><span class="summary-label">Scale Info</span></summary>
+    <div id="scale-info"></div>
+  </details>
+
+  <!-- Tempo -->
+  <div class="card">
+    <div class="tempo-header">
+      <p class="card-label" style="margin:0;">Tempo</p>
+      <div class="tempo-right">
+        <div class="tempo-display">
+          <span id="tempo-value">80</span><span class="bpm-unit">BPM</span>
+        </div>
+        <button id="tap-btn" class="btn-tap">TAP</button>
+      </div>
+    </div>
+    <input type="range" id="tempo-slider" min="40" max="160" step="1" value="80" />
+  </div>
+
+  <!-- Metronome -->
+  <details class="card" id="metronome-card" open>
+    <summary><span class="summary-label">Metronome</span></summary>
+    <div class="toggle-list">
+      <div class="toggle-row">
+        <span class="toggle-label">Click Track</span>
+        <div class="click-controls">
+          <select id="click-sound" class="inline-select">
+            <option value="woodblock">Wood Block</option>
+            <option value="beep">Beep</option>
+            <option value="rimshot">Rim Shot</option>
+            <option value="cowbell">Cowbell</option>
+            <option value="hihat">Hi-Hat</option>
+            <option value="kick">Kick</option>
+          </select>
+          <label class="switch"><input type="checkbox" id="toggle-click" checked /><span class="slider-bg"></span></label>
+        </div>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Subdivision</span>
+        <select id="click-subdivision" class="inline-select">
+          <option value="quarter">Quarter</option>
+          <option value="eighth">Eighth</option>
+          <option value="sixteenth">Sixteenth</option>
+          <option value="none">None</option>
+        </select>
+      </div>
+      <div class="toggle-row stacked-row">
+        <span class="toggle-label">Style</span>
+        <div class="preset-row">
+          <button class="preset-pill active" data-preset="straight">Straight</button>
+          <button class="preset-pill" data-preset="rock">Rock</button>
+          <button class="preset-pill" data-preset="blues">Blues</button>
+          <button class="preset-pill" data-preset="hiphop">Hip Hop</button>
+          <button class="preset-pill" data-preset="reggae">Reggae</button>
+          <button class="preset-pill" data-preset="funk">Funk</button>
+          <button class="preset-pill" data-preset="dance">Dance</button>
+          <button class="preset-pill" data-preset="latin">Latin</button>
+          <button class="preset-pill" data-preset="jazz">Jazz</button>
+          <button class="preset-pill" data-preset="shuffle">Shuffle</button>
+          <button class="preset-pill" data-preset="gospel">Gospel</button>
+          <button class="preset-pill" data-preset="country">Country</button>
+        </div>
+      </div>
+      <div class="toggle-row stacked-row">
+        <span class="toggle-label">Accent <span style="color:var(--muted);font-weight:500;">(tap to cycle)</span></span>
+        <div class="beat-grid">
+          <div class="beat-cell" data-beat="0" data-level="3"><div class="beat-cell-bar"><div class="beat-cell-fill"></div></div><span class="beat-cell-num">1</span></div>
+          <div class="beat-cell" data-beat="1" data-level="2"><div class="beat-cell-bar"><div class="beat-cell-fill"></div></div><span class="beat-cell-num">2</span></div>
+          <div class="beat-cell" data-beat="2" data-level="2"><div class="beat-cell-bar"><div class="beat-cell-fill"></div></div><span class="beat-cell-num">3</span></div>
+          <div class="beat-cell" data-beat="3" data-level="2"><div class="beat-cell-bar"><div class="beat-cell-fill"></div></div><span class="beat-cell-num">4</span></div>
+        </div>
+      </div>
+      <div class="toggle-row swing-row">
+        <div class="swing-header">
+          <span class="toggle-label">Swing</span>
+          <span class="swing-readout"><span id="swing-value">0</span>%</span>
+        </div>
+        <input type="range" id="swing-slider" min="0" max="75" step="5" value="0" />
+      </div>
+    </div>
+  </details>
+
+  <!-- Settings -->
+  <details class="card">
+    <summary><span class="summary-label">Playback Settings</span></summary>
+    <div class="toggle-list">
+      <div class="toggle-row">
+        <span class="toggle-label">Piano</span>
+        <label class="switch"><input type="checkbox" id="toggle-piano" checked /><span class="slider-bg"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Note Names</span>
+        <label class="switch"><input type="checkbox" id="toggle-names" checked /><span class="slider-bg"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Finger Numbers</span>
+        <label class="switch"><input type="checkbox" id="toggle-fingers" checked /><span class="slider-bg"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Cross Over / Under</span>
+        <label class="switch"><input type="checkbox" id="toggle-cross" checked /><span class="slider-bg"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Metronome Only</span>
+        <label class="switch"><input type="checkbox" id="toggle-metronome" /><span class="slider-bg"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Voice Cues</span>
+        <label class="switch"><input type="checkbox" id="toggle-voice-cues" checked /><span class="slider-bg"></span></label>
+      </div>
+      <div class="toggle-row theme-row">
+        <span class="toggle-label">Theme</span>
+        <div class="theme-pills">
+          <button class="theme-pill active" data-theme-val="dark">Dark</button>
+          <button class="theme-pill" data-theme-val="light">Light</button>
+          <button class="theme-pill" data-theme-val="hc">High Contrast</button>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- Section selector -->
+  <div class="card sections-card">
+    <div class="section-row">
+      <div class="section-meta">
+        <span class="section-clef" aria-hidden="true">&#x1D11E;</span>
+        <span class="section-name">Right Hand</span>
+        <span class="hand-icon" aria-hidden="true">🤚</span>
+      </div>
+      <div class="section-pills">
+        <button class="pill active" data-target="rh">Full</button>
+        <button class="pill" data-target="rh-fwd">Up</button>
+        <button class="pill" data-target="rh-bwd">Down</button>
+      </div>
+    </div>
+    <div class="section-row">
+      <div class="section-meta">
+        <span class="section-clef" aria-hidden="true">&#x1D122;</span>
+        <span class="section-name">Left Hand</span>
+        <span class="hand-icon" aria-hidden="true">✋</span>
+      </div>
+      <div class="section-pills">
+        <button class="pill" data-target="lh">Full</button>
+        <button class="pill" data-target="lh-fwd">Up</button>
+        <button class="pill" data-target="lh-bwd">Down</button>
+      </div>
+    </div>
+    <div class="section-row">
+      <div class="section-meta">
+        <span class="section-clef" aria-hidden="true">&#x1D122;&#x1D11E;</span>
+        <span class="section-name">Both Hands</span>
+        <span class="hand-icon" aria-hidden="true">✋🤚</span>
+      </div>
+      <div class="section-pills">
+        <button class="pill" data-target="together">Full</button>
+        <button class="pill" data-target="together-fwd">Up</button>
+        <button class="pill" data-target="together-bwd">Down</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stat boxes: Pre-count / Speed Ramp / Session Timer -->
+  <div class="stat-row">
+    <div class="stat-box">
+      <span class="stat-box-label">Pre-count</span>
+      <div class="stat-box-body">
+        <span class="stat-value">4 beats</span>
+        <label class="switch"><input type="checkbox" id="toggle-precount"><span class="slider-bg"></span></label>
+      </div>
+    </div>
+    <div class="stat-box">
+      <span class="stat-box-label">Speed Ramp</span>
+      <div class="stat-box-body">
+        <div class="ramp-config">
+          +<input type="number" id="ramp-amount" class="stat-num" value="5" min="1" max="20">
+          <span>BPM /</span>
+          <input type="number" id="ramp-loops" class="stat-num" value="2" min="1" max="10">
+          <span>loops</span>
+        </div>
+        <label class="switch"><input type="checkbox" id="toggle-ramp"><span class="slider-bg"></span></label>
+      </div>
+    </div>
+    <div class="stat-box">
+      <span class="stat-box-label">Session</span>
+      <div class="stat-box-body">
+        <span class="stat-value timer-val" id="session-timer">00:00</span>
+        <div class="timer-controls">
+          <button class="timer-btn" id="timer-playpause" title="Pause / Resume">⏸</button>
+          <button class="timer-btn" id="timer-reset" title="Reset timer">↺</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transport -->
+  <div class="transport">
+    <button id="restart-btn" class="btn-icon" disabled title="Restart" aria-label="Restart">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+    </button>
+    <button id="play-btn" title="Play" aria-label="Play">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      Play
+    </button>
+    <button id="loop-toggle-btn" class="btn-icon" title="Loop" aria-label="Loop">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v5z"/></svg>
+    </button>
+    <button id="stop-btn" class="btn-icon" disabled title="Stop" aria-label="Stop">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M6 6h12v12H6z"/></svg>
+    </button>
+  </div>
+
+  <!-- Beat dots -->
+  <div class="beat-dots" id="beat-dots" aria-hidden="true">
+    <span class="beat-dot" data-beat="0"></span>
+    <span class="beat-dot" data-beat="1"></span>
+    <span class="beat-dot" data-beat="2"></span>
+    <span class="beat-dot" data-beat="3"></span>
+  </div>
+
+  <!-- Status -->
+  <div id="status">
+    <span id="status-label">Ready</span>
+    <span id="status-big">&nbsp;</span>
+  </div>
+
+  <!-- Piano roll -->
+  <div class="card">
+    <p class="visual-label">Piano Roll</p>
+    <div id="piano-roll"></div>
+  </div>
+
+  <!-- Sheet music -->
+  <div class="card">
+    <p class="visual-label">Sheet Music</p>
+    <div id="sheet-music"></div>
+  </div>
+
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vexflow@1.2.93/releases/vexflow-min.js"></script>
+<script src="data.js"></script>
+<script src="pianoroll.js"></script>
+<script src="scaleinfo.js"></script>
+<script src="sheetmusic.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
