@@ -55,3 +55,38 @@ reconstructed, and the specific reasoning/evidence used.
 F# Major" (book p.30) and "Key of F# Minor" (book p.54, relative minor
 of A major). Compare against `F_SHARP_MAJOR`, `F_SHARP_NATURAL_MINOR`,
 `F_SHARP_HARMONIC_MINOR`, `F_SHARP_MELODIC_MINOR` in `data.js`.
+
+---
+
+## F Major + F Minor family (all 4 types) — flagged 2026-07-07
+
+**Confirmed directly from the book (box text, identical wording on
+both the Major page p.34 and Minor page p.70, high confidence):**
+- LH: 4th finger on the 2nd degree (G) — this IS the standard C/D/G/
+  A/E scaffold, confirmed, no change needed.
+- RH: 4th finger on the 4th degree (B♭) — this is NOT the standard
+  scaffold (standard puts the 4th finger on the 7th degree). F major's
+  octave-top note is also legibly labeled "4" (not "5"), confirming
+  the RH never uses the pinky in this scale at all.
+
+**Reconstructed (not pixel-confirmed) — used for building the data:**
+- `RH_ASC = [1,2,3,4,1,2,3,4]` — the well-known "no-thumb-tuck" F
+  major RH fingering (two identical 1-2-3-4 hand positions, confirmed
+  at one point by the box: index 3 = B♭ = finger 4, and at the other
+  end: the octave = finger 4, matching the visible "4" at the peak).
+  The two middle notes of each 4-note group (index 1 and index 2 each
+  time) were NOT independently pixel-confirmed — attempts to read
+  them directly produced labels that appeared to contradict the box
+  text, most likely due to misreading which beam/note a given label
+  belongs to on a cramped 2-octave engraving. Went with the standard,
+  well-documented "1-2-3-4 / 1-2-3-4" pattern instead of chasing the
+  pixels further.
+- Cross-cue position shifted to index 3 ascending / index 4
+  descending (where the 4→1 finger jump actually happens in this
+  pattern), rather than the standard scaffold's index 2/3.
+- LH reuses the full standard scaffold as-is (confirmed by box).
+
+**To manually re-verify later:** Alfred's Basic Piano Library, "Key of
+F Major" (book p.34) and "Key of F Minor" (book p.70, relative minor
+of Ab major). Compare against `F_MAJOR`, `F_NATURAL_MINOR`,
+`F_HARMONIC_MINOR`, `F_MELODIC_MINOR` in `data.js`.
