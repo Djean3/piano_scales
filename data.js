@@ -6528,6 +6528,425 @@ const E_FLAT_MELODIC_MINOR = {
   ],
 };
 
+const A_FLAT_MAJOR = {
+  name: "Ab Major",
+  nameAudio: V + "66_Ab_Major.wav",
+  info: {
+    typeLabel: "Major scale",
+    description: "Four flats — B♭, E♭, A♭, and D♭ — a rich, mellow key common in jazz and " +
+      "classical repertoire. A♭ major's RH uses a repeating 3-note finger cell rather than the " +
+      "standard C/D/G/A/E scaffold, confirmed against Alfred's Basic Piano Library.",
+    advanced: "Same Whole, Whole, Half, Whole, Whole, Whole, Half interval pattern as every major " +
+      "scale. The book's own footnote applies here: in a single (1st) octave — exactly what this " +
+      "app plays — RH uses the 3rd finger on B♭ (2nd degree), not the 4th finger the book's summary " +
+      "box lists for later octaves. LH 4th finger lands on D♭ (4th degree), matching the standard " +
+      "irregular-key shape seen in E♭ and B♭ major.",
+    keyInfo: {
+      signature: "4 flats — B♭, E♭, A♭, and D♭",
+      relative: "F minor",
+      parallel: "A♭ minor",
+      genres: ["Jazz", "Classical", "Gospel"],
+    },
+    degrees: {
+      solfege:     ["Do",  "Re",    "Mi",     "Fa",          "Sol",      "La",         "Ti"],
+      names:       ["Tonic","Supertonic","Mediant","Subdominant","Dominant","Submediant","Leading Tone"],
+      functions:   ["Home","Passing","Color",  "Pre-dom",     "Tension",  "Color",      "Pull to 1"],
+    },
+    modeRotation: 0,
+    pentatonic: {
+      indices: [0, 1, 2, 4, 5],
+      dropped: "the 4th (D♭) and 7th (G) — the most tension-heavy notes",
+    },
+    progressions: [
+      { roman: "I – IV – V",      chords: ["A♭", "D♭", "E♭"],          genre: "Rock / Blues" },
+      { roman: "I – V – vi – IV", chords: ["A♭", "E♭", "Fm", "D♭"],    genre: "Pop" },
+      { roman: "ii – V – I",      chords: ["B♭m", "E♭", "A♭"],         genre: "Jazz" },
+    ],
+  },
+  sections: [
+    {
+      id: "rh",
+      announceAudio: V + "right_hand.wav",
+      clef: "treble",
+      slots: [
+        { pitches: [68], finger: 2, voiceAudio: V + "f2_Ab.wav", cross: null },
+        { pitches: [70], finger: 3, voiceAudio: V + "f3_Bb.wav", cross: null },
+        { pitches: [72], finger: 1, voiceAudio: V + "f1_C.wav", cross: CROSS_UNDER },
+        { pitches: [73], finger: 2, voiceAudio: V + "f2_Db.wav", cross: null },
+        { pitches: [75], finger: 3, voiceAudio: V + "f3_Eb.wav", cross: null },
+        { pitches: [77], finger: 1, voiceAudio: V + "f1_F.wav", cross: null },
+        { pitches: [79], finger: 2, voiceAudio: V + "f2_G.wav", cross: null },
+        { pitches: [80], finger: 3, voiceAudio: V + "f3_Ab.wav", cross: null },
+        { pitches: [80], finger: 3, voiceAudio: V + "now_backwards.wav", cross: null },
+        { pitches: [79], finger: 2, voiceAudio: V + "f2_G.wav", cross: null },
+        { pitches: [77], finger: 1, voiceAudio: V + "f1_F.wav", cross: null },
+        { pitches: [75], finger: 3, voiceAudio: V + "f3_Eb.wav", cross: null },
+        { pitches: [73], finger: 2, voiceAudio: V + "f2_Db.wav", cross: null },
+        { pitches: [72], finger: 1, voiceAudio: V + "f1_C.wav", cross: CROSS_OVER },
+        { pitches: [70], finger: 3, voiceAudio: V + "f3_Bb.wav", cross: null },
+        { pitches: [68], finger: 2, voiceAudio: V + "f2_Ab.wav", cross: null },
+      ],
+    },
+    {
+      id: "lh",
+      announceAudio: V + "left_hand.wav",
+      clef: "bass",
+      slots: [
+        { pitches: [56], finger: 3, voiceAudio: V + "f3_Ab.wav", cross: null },
+        { pitches: [58], finger: 2, voiceAudio: V + "f2_Bb.wav", cross: null },
+        { pitches: [60], finger: 1, voiceAudio: V + "f1_C.wav", cross: null },
+        { pitches: [61], finger: 4, voiceAudio: V + "f4_Db.wav", cross: CROSS_UNDER },
+        { pitches: [63], finger: 3, voiceAudio: V + "f3_Eb.wav", cross: null },
+        { pitches: [65], finger: 2, voiceAudio: V + "f2_F.wav", cross: null },
+        { pitches: [67], finger: 1, voiceAudio: V + "f1_G.wav", cross: null },
+        { pitches: [68], finger: 4, voiceAudio: V + "f4_Ab.wav", cross: null },
+        { pitches: [68], finger: 4, voiceAudio: V + "now_backwards.wav", cross: null },
+        { pitches: [67], finger: 1, voiceAudio: V + "f1_G.wav", cross: null },
+        { pitches: [65], finger: 2, voiceAudio: V + "f2_F.wav", cross: null },
+        { pitches: [63], finger: 3, voiceAudio: V + "f3_Eb.wav", cross: null },
+        { pitches: [61], finger: 4, voiceAudio: V + "f4_Db.wav", cross: CROSS_OVER },
+        { pitches: [60], finger: 1, voiceAudio: V + "f1_C.wav", cross: null },
+        { pitches: [58], finger: 2, voiceAudio: V + "f2_Bb.wav", cross: null },
+        { pitches: [56], finger: 3, voiceAudio: V + "f3_Ab.wav", cross: null },
+      ],
+    },
+    {
+      id: "together",
+      announceAudio: V + "together.wav",
+      clef: "grand",
+      slots: [
+        { pitches: [68, 56], fingers: [2, 3], voiceAudio: V + "note_Ab.wav", cross: null },
+        { pitches: [70, 58], fingers: [3, 2], voiceAudio: V + "note_Bb.wav", cross: null },
+        { pitches: [72, 60], fingers: [1, 1], voiceAudio: V + "note_C.wav", cross: CROSS_UNDER_RIGHT },
+        { pitches: [73, 61], fingers: [2, 4], voiceAudio: V + "note_Db.wav", cross: CROSS_OVER_LEFT },
+        { pitches: [75, 63], fingers: [3, 3], voiceAudio: V + "note_Eb.wav", cross: null },
+        { pitches: [77, 65], fingers: [1, 2], voiceAudio: V + "note_F.wav", cross: null },
+        { pitches: [79, 67], fingers: [2, 1], voiceAudio: V + "note_G.wav", cross: null },
+        { pitches: [80, 68], fingers: [3, 4], voiceAudio: V + "note_Ab.wav", cross: null },
+        { pitches: [80, 68], fingers: [3, 4], voiceAudio: V + "now_backwards.wav", cross: null },
+        { pitches: [79, 67], fingers: [2, 1], voiceAudio: V + "note_G.wav", cross: null },
+        { pitches: [77, 65], fingers: [1, 2], voiceAudio: V + "note_F.wav", cross: null },
+        { pitches: [75, 63], fingers: [3, 3], voiceAudio: V + "note_Eb.wav", cross: null },
+        { pitches: [73, 61], fingers: [2, 4], voiceAudio: V + "note_Db.wav", cross: CROSS_UNDER_LEFT },
+        { pitches: [72, 60], fingers: [1, 1], voiceAudio: V + "note_C.wav", cross: CROSS_OVER_RIGHT },
+        { pitches: [70, 58], fingers: [3, 2], voiceAudio: V + "note_Bb.wav", cross: null },
+        { pitches: [68, 56], fingers: [2, 3], voiceAudio: V + "note_Ab.wav", cross: null },
+      ],
+    },
+  ],
+};
+
+const A_FLAT_NATURAL_MINOR = {
+  name: "Ab Natural Minor",
+  nameAudio: V + "67_Ab_Natural_Minor.wav",
+  info: {
+    typeLabel: "Natural Minor scale (Aeolian)",
+    description: "The parallel minor of A♭ major — seven flats (B♭, E♭, A♭, D♭, G♭, C♭, F♭), the " +
+      "darkest key in the whole book, and the ONLY scale where the natural minor's LH fingering " +
+      "differs from its own harmonic minor (per Alfred's Basic Piano Library, which calls this " +
+      "out explicitly).",
+    advanced: "Natural minor is the 6th mode of its relative major (here, C♭ major) — same key " +
+      "signature, just starting and ending on A♭ instead of C♭. Interval pattern: Whole, Half, " +
+      "Whole, Whole, Half, Whole, Whole.",
+    keyInfo: {
+      signature: "7 flats — B♭, E♭, A♭, D♭, G♭, C♭, and F♭",
+      relative: "C♭ Major",
+      parallel: "A♭ Major",
+      genres: ["Classical", "Rock", "Blues", "Film Score"],
+    },
+    degrees: {
+      solfege:     ["Do",  "Re",    "Me",     "Fa",          "Sol",      "Le",         "Te"],
+      names:       ["Tonic","Supertonic","Mediant","Subdominant","Dominant","Submediant","Subtonic"],
+      functions:   ["Home","Passing","Color",  "Pre-dom",     "Tension",  "Color",      "Weak pull"],
+    },
+    modeRotation: 5,
+    pentatonic: {
+      indices: [0, 2, 3, 4, 6],
+      dropped: "the 2nd (B♭) and 6th (F♭)",
+    },
+    progressions: [
+      { roman: "i – iv – v",       chords: ["A♭m", "D♭m", "E♭m"],       genre: "Rock / Modal" },
+      { roman: "i – VI – VII",     chords: ["A♭m", "F♭", "G♭"],         genre: "Rock / Pop" },
+      { roman: "i – iv – VII",     chords: ["A♭m", "D♭m", "G♭"],        genre: "Blues-Rock" },
+    ],
+  },
+  sections: [
+    {
+      id: "rh",
+      announceAudio: V + "right_hand.wav",
+      clef: "treble",
+      slots: [
+        { pitches: [68], finger: 2, voiceAudio: V + "f2_Ab.wav", cross: null },
+        { pitches: [70], finger: 3, voiceAudio: V + "f3_Bb.wav", cross: null },
+        { pitches: [71], finger: 1, voiceAudio: V + "f1_Cb.wav", cross: CROSS_UNDER },
+        { pitches: [73], finger: 2, voiceAudio: V + "f2_Db.wav", cross: null },
+        { pitches: [75], finger: 3, voiceAudio: V + "f3_Eb.wav", cross: null },
+        { pitches: [76], finger: 1, voiceAudio: V + "f1_Fb.wav", cross: null },
+        { pitches: [78], finger: 2, voiceAudio: V + "f2_Gb.wav", cross: null },
+        { pitches: [80], finger: 3, voiceAudio: V + "f3_Ab.wav", cross: null },
+        { pitches: [80], finger: 3, voiceAudio: V + "now_backwards.wav", cross: null },
+        { pitches: [78], finger: 2, voiceAudio: V + "f2_Gb.wav", cross: null },
+        { pitches: [76], finger: 1, voiceAudio: V + "f1_Fb.wav", cross: null },
+        { pitches: [75], finger: 3, voiceAudio: V + "f3_Eb.wav", cross: null },
+        { pitches: [73], finger: 2, voiceAudio: V + "f2_Db.wav", cross: null },
+        { pitches: [71], finger: 1, voiceAudio: V + "f1_Cb.wav", cross: CROSS_OVER },
+        { pitches: [70], finger: 3, voiceAudio: V + "f3_Bb.wav", cross: null },
+        { pitches: [68], finger: 2, voiceAudio: V + "f2_Ab.wav", cross: null },
+      ],
+    },
+    {
+      id: "lh",
+      announceAudio: V + "left_hand.wav",
+      clef: "bass",
+      slots: [
+        { pitches: [56], finger: 3, voiceAudio: V + "f3_Ab.wav", cross: null },
+        { pitches: [58], finger: 2, voiceAudio: V + "f2_Bb.wav", cross: null },
+        { pitches: [59], finger: 1, voiceAudio: V + "f1_Cb.wav", cross: null },
+        { pitches: [61], finger: 2, voiceAudio: V + "f2_Db.wav", cross: null },
+        { pitches: [63], finger: 3, voiceAudio: V + "f3_Eb.wav", cross: null },
+        { pitches: [64], finger: 1, voiceAudio: V + "f1_Fb.wav", cross: null },
+        { pitches: [66], finger: 4, voiceAudio: V + "f4_Gb.wav", cross: CROSS_UNDER },
+        { pitches: [68], finger: 3, voiceAudio: V + "f3_Ab.wav", cross: null },
+        { pitches: [68], finger: 3, voiceAudio: V + "now_backwards.wav", cross: null },
+        { pitches: [66], finger: 4, voiceAudio: V + "f4_Gb.wav", cross: CROSS_OVER },
+        { pitches: [64], finger: 1, voiceAudio: V + "f1_Fb.wav", cross: null },
+        { pitches: [63], finger: 3, voiceAudio: V + "f3_Eb.wav", cross: null },
+        { pitches: [61], finger: 2, voiceAudio: V + "f2_Db.wav", cross: null },
+        { pitches: [59], finger: 1, voiceAudio: V + "f1_Cb.wav", cross: null },
+        { pitches: [58], finger: 2, voiceAudio: V + "f2_Bb.wav", cross: null },
+        { pitches: [56], finger: 3, voiceAudio: V + "f3_Ab.wav", cross: null },
+      ],
+    },
+    {
+      id: "together",
+      announceAudio: V + "together.wav",
+      clef: "grand",
+      slots: [
+        { pitches: [68, 56], fingers: [2, 3], voiceAudio: V + "note_Ab.wav", cross: null },
+        { pitches: [70, 58], fingers: [3, 2], voiceAudio: V + "note_Bb.wav", cross: null },
+        { pitches: [71, 59], fingers: [1, 1], voiceAudio: V + "note_Cb.wav", cross: CROSS_UNDER_RIGHT },
+        { pitches: [73, 61], fingers: [2, 2], voiceAudio: V + "note_Db.wav", cross: null },
+        { pitches: [75, 63], fingers: [3, 3], voiceAudio: V + "note_Eb.wav", cross: null },
+        { pitches: [76, 64], fingers: [1, 1], voiceAudio: V + "note_Fb.wav", cross: null },
+        { pitches: [78, 66], fingers: [2, 4], voiceAudio: V + "note_Gb.wav", cross: CROSS_OVER_LEFT },
+        { pitches: [80, 68], fingers: [3, 3], voiceAudio: V + "note_Ab.wav", cross: null },
+        { pitches: [80, 68], fingers: [3, 3], voiceAudio: V + "now_backwards.wav", cross: null },
+        { pitches: [78, 66], fingers: [2, 4], voiceAudio: V + "note_Gb.wav", cross: CROSS_UNDER_LEFT },
+        { pitches: [76, 64], fingers: [1, 1], voiceAudio: V + "note_Fb.wav", cross: null },
+        { pitches: [75, 63], fingers: [3, 3], voiceAudio: V + "note_Eb.wav", cross: null },
+        { pitches: [73, 61], fingers: [2, 2], voiceAudio: V + "note_Db.wav", cross: null },
+        { pitches: [71, 59], fingers: [1, 1], voiceAudio: V + "note_Cb.wav", cross: CROSS_OVER_RIGHT },
+        { pitches: [70, 58], fingers: [3, 2], voiceAudio: V + "note_Bb.wav", cross: null },
+        { pitches: [68, 56], fingers: [2, 3], voiceAudio: V + "note_Ab.wav", cross: null },
+      ],
+    },
+  ],
+};
+
+const A_FLAT_HARMONIC_MINOR = {
+  name: "Ab Harmonic Minor",
+  nameAudio: V + "68_Ab_Harmonic_Minor.wav",
+  info: {
+    typeLabel: "Harmonic Minor scale",
+    description: "Natural minor with a raised 7th (G natural instead of G♭) — that extra half step " +
+      "to the octave gives it a dramatic, exotic sound. Unlike natural minor, this form's LH shares " +
+      "A♭ major's LH fingering exactly (Alfred's Basic Piano Library calls this out as the only " +
+      "key where natural minor's LH breaks from harmonic minor's).",
+    advanced: "The gap between the 6th (F♭) and raised 7th (G) is a step-and-a-half (an augmented " +
+      "2nd) — the source of harmonic minor's Middle-Eastern/flamenco color. Raising the 7th also " +
+      "turns the v chord into a proper major V, giving minor keys a strong dominant-to-tonic pull " +
+      "that natural minor doesn't have.",
+    keyInfo: {
+      signature: "7 flats (B♭, E♭, A♭, D♭, G♭, C♭, F♭), plus a raised 7th (G natural)",
+      relative: "A♭ Natural Minor",
+      parallel: "A♭ Major",
+      genres: ["Classical", "Metal", "Flamenco", "Klezmer"],
+    },
+    degrees: {
+      solfege:     ["Do",  "Re",    "Me",     "Fa",          "Sol",      "Le",         "Ti"],
+      names:       ["Tonic","Supertonic","Mediant","Subdominant","Dominant","Submediant","Leading Tone"],
+      functions:   ["Home","Passing","Color",  "Pre-dom",     "Tension",  "Color",      "Pull to 1"],
+    },
+    progressions: [
+      { roman: "i – iv – V",   chords: ["A♭m", "D♭m", "E♭"],   genre: "Classical Cadence" },
+      { roman: "V7 – i",       chords: ["E♭7", "A♭m"],         genre: "Strong Resolution" },
+    ],
+  },
+  sections: [
+    {
+      id: "rh",
+      announceAudio: V + "right_hand.wav",
+      clef: "treble",
+      slots: [
+        { pitches: [68], finger: 2, voiceAudio: V + "f2_Ab.wav", cross: null },
+        { pitches: [70], finger: 3, voiceAudio: V + "f3_Bb.wav", cross: null },
+        { pitches: [71], finger: 1, voiceAudio: V + "f1_Cb.wav", cross: CROSS_UNDER },
+        { pitches: [73], finger: 2, voiceAudio: V + "f2_Db.wav", cross: null },
+        { pitches: [75], finger: 3, voiceAudio: V + "f3_Eb.wav", cross: null },
+        { pitches: [76], finger: 1, voiceAudio: V + "f1_Fb.wav", cross: null },
+        { pitches: [79], finger: 2, voiceAudio: V + "f2_G.wav", cross: null },
+        { pitches: [80], finger: 3, voiceAudio: V + "f3_Ab.wav", cross: null },
+        { pitches: [80], finger: 3, voiceAudio: V + "now_backwards.wav", cross: null },
+        { pitches: [79], finger: 2, voiceAudio: V + "f2_G.wav", cross: null },
+        { pitches: [76], finger: 1, voiceAudio: V + "f1_Fb.wav", cross: null },
+        { pitches: [75], finger: 3, voiceAudio: V + "f3_Eb.wav", cross: null },
+        { pitches: [73], finger: 2, voiceAudio: V + "f2_Db.wav", cross: null },
+        { pitches: [71], finger: 1, voiceAudio: V + "f1_Cb.wav", cross: CROSS_OVER },
+        { pitches: [70], finger: 3, voiceAudio: V + "f3_Bb.wav", cross: null },
+        { pitches: [68], finger: 2, voiceAudio: V + "f2_Ab.wav", cross: null },
+      ],
+    },
+    {
+      id: "lh",
+      announceAudio: V + "left_hand.wav",
+      clef: "bass",
+      slots: [
+        { pitches: [56], finger: 3, voiceAudio: V + "f3_Ab.wav", cross: null },
+        { pitches: [58], finger: 2, voiceAudio: V + "f2_Bb.wav", cross: null },
+        { pitches: [59], finger: 1, voiceAudio: V + "f1_Cb.wav", cross: null },
+        { pitches: [61], finger: 4, voiceAudio: V + "f4_Db.wav", cross: CROSS_UNDER },
+        { pitches: [63], finger: 3, voiceAudio: V + "f3_Eb.wav", cross: null },
+        { pitches: [64], finger: 2, voiceAudio: V + "f2_Fb.wav", cross: null },
+        { pitches: [67], finger: 1, voiceAudio: V + "f1_G.wav", cross: null },
+        { pitches: [68], finger: 4, voiceAudio: V + "f4_Ab.wav", cross: null },
+        { pitches: [68], finger: 4, voiceAudio: V + "now_backwards.wav", cross: null },
+        { pitches: [67], finger: 1, voiceAudio: V + "f1_G.wav", cross: null },
+        { pitches: [64], finger: 2, voiceAudio: V + "f2_Fb.wav", cross: null },
+        { pitches: [63], finger: 3, voiceAudio: V + "f3_Eb.wav", cross: null },
+        { pitches: [61], finger: 4, voiceAudio: V + "f4_Db.wav", cross: CROSS_OVER },
+        { pitches: [59], finger: 1, voiceAudio: V + "f1_Cb.wav", cross: null },
+        { pitches: [58], finger: 2, voiceAudio: V + "f2_Bb.wav", cross: null },
+        { pitches: [56], finger: 3, voiceAudio: V + "f3_Ab.wav", cross: null },
+      ],
+    },
+    {
+      id: "together",
+      announceAudio: V + "together.wav",
+      clef: "grand",
+      slots: [
+        { pitches: [68, 56], fingers: [2, 3], voiceAudio: V + "note_Ab.wav", cross: null },
+        { pitches: [70, 58], fingers: [3, 2], voiceAudio: V + "note_Bb.wav", cross: null },
+        { pitches: [71, 59], fingers: [1, 1], voiceAudio: V + "note_Cb.wav", cross: CROSS_UNDER_RIGHT },
+        { pitches: [73, 61], fingers: [2, 4], voiceAudio: V + "note_Db.wav", cross: CROSS_OVER_LEFT },
+        { pitches: [75, 63], fingers: [3, 3], voiceAudio: V + "note_Eb.wav", cross: null },
+        { pitches: [76, 64], fingers: [1, 2], voiceAudio: V + "note_Fb.wav", cross: null },
+        { pitches: [79, 67], fingers: [2, 1], voiceAudio: V + "note_G.wav", cross: null },
+        { pitches: [80, 68], fingers: [3, 4], voiceAudio: V + "note_Ab.wav", cross: null },
+        { pitches: [80, 68], fingers: [3, 4], voiceAudio: V + "now_backwards.wav", cross: null },
+        { pitches: [79, 67], fingers: [2, 1], voiceAudio: V + "note_G.wav", cross: null },
+        { pitches: [76, 64], fingers: [1, 2], voiceAudio: V + "note_Fb.wav", cross: null },
+        { pitches: [75, 63], fingers: [3, 3], voiceAudio: V + "note_Eb.wav", cross: null },
+        { pitches: [73, 61], fingers: [2, 4], voiceAudio: V + "note_Db.wav", cross: CROSS_UNDER_LEFT },
+        { pitches: [71, 59], fingers: [1, 1], voiceAudio: V + "note_Cb.wav", cross: CROSS_OVER_RIGHT },
+        { pitches: [70, 58], fingers: [3, 2], voiceAudio: V + "note_Bb.wav", cross: null },
+        { pitches: [68, 56], fingers: [2, 3], voiceAudio: V + "note_Ab.wav", cross: null },
+      ],
+    },
+  ],
+};
+
+const A_FLAT_MELODIC_MINOR = {
+  name: "Ab Melodic Minor",
+  nameAudio: V + "69_Ab_Melodic_Minor.wav",
+  info: {
+    typeLabel: "Melodic Minor scale (classical)",
+    description: "Natural minor with a raised 6th and 7th going up (F and G instead of F♭ and G♭) " +
+      "for a smoother climb — then it reverts to natural minor coming back down. LH fingering is a " +
+      "genuine hybrid here: the ascending shape matches A♭ major/harmonic minor, and the descending " +
+      "shape matches natural minor — confirmed directly by Alfred's Basic Piano Library's own " +
+      "\"LH 4th finger on D♭ ascending, G♭ descending\" note.",
+    advanced: "Classical melodic minor is asymmetric: ascending it borrows the 6th and 7th from " +
+      "A♭ major, removing the augmented-2nd gap that harmonic minor has; descending it reverts to " +
+      "the natural minor. (Jazz players often use the same raised 6th/7th in both directions — the " +
+      "\"jazz minor\" scale — but this app follows the classical piano-method convention.)",
+    keyInfo: {
+      signature: "7 flats (B♭, E♭, A♭, D♭, G♭, C♭, F♭); 6th and 7th raised ascending only",
+      relative: "A♭ Natural Minor",
+      parallel: "A♭ Major",
+      genres: ["Classical", "Jazz", "Film Score"],
+    },
+    degrees: {
+      solfege:     ["Do",  "Re",    "Me",     "Fa",          "Sol",      "La",         "Ti"],
+      names:       ["Tonic","Supertonic","Mediant","Subdominant","Dominant","Submediant","Leading Tone"],
+      functions:   ["Home","Passing","Color",  "Pre-dom",     "Tension",  "Color",      "Pull to 1"],
+    },
+    progressions: [
+      { roman: "i – IV – V",  chords: ["A♭m", "D♭", "E♭"],   genre: "Jazz Minor" },
+    ],
+  },
+  sections: [
+    {
+      id: "rh",
+      announceAudio: V + "right_hand.wav",
+      clef: "treble",
+      slots: [
+        { pitches: [68], finger: 2, voiceAudio: V + "f2_Ab.wav", cross: null },
+        { pitches: [70], finger: 3, voiceAudio: V + "f3_Bb.wav", cross: null },
+        { pitches: [71], finger: 1, voiceAudio: V + "f1_Cb.wav", cross: CROSS_UNDER },
+        { pitches: [73], finger: 2, voiceAudio: V + "f2_Db.wav", cross: null },
+        { pitches: [75], finger: 3, voiceAudio: V + "f3_Eb.wav", cross: null },
+        { pitches: [77], finger: 1, voiceAudio: V + "f1_F.wav", cross: null },
+        { pitches: [79], finger: 2, voiceAudio: V + "f2_G.wav", cross: null },
+        { pitches: [80], finger: 3, voiceAudio: V + "f3_Ab.wav", cross: null },
+        { pitches: [80], finger: 3, voiceAudio: V + "now_backwards.wav", cross: null },
+        { pitches: [78], finger: 2, voiceAudio: V + "f2_Gb.wav", cross: null },
+        { pitches: [76], finger: 1, voiceAudio: V + "f1_Fb.wav", cross: null },
+        { pitches: [75], finger: 3, voiceAudio: V + "f3_Eb.wav", cross: null },
+        { pitches: [73], finger: 2, voiceAudio: V + "f2_Db.wav", cross: null },
+        { pitches: [71], finger: 1, voiceAudio: V + "f1_Cb.wav", cross: CROSS_OVER },
+        { pitches: [70], finger: 3, voiceAudio: V + "f3_Bb.wav", cross: null },
+        { pitches: [68], finger: 2, voiceAudio: V + "f2_Ab.wav", cross: null },
+      ],
+    },
+    {
+      id: "lh",
+      announceAudio: V + "left_hand.wav",
+      clef: "bass",
+      slots: [
+        { pitches: [56], finger: 3, voiceAudio: V + "f3_Ab.wav", cross: null },
+        { pitches: [58], finger: 2, voiceAudio: V + "f2_Bb.wav", cross: null },
+        { pitches: [59], finger: 1, voiceAudio: V + "f1_Cb.wav", cross: null },
+        { pitches: [61], finger: 4, voiceAudio: V + "f4_Db.wav", cross: CROSS_UNDER },
+        { pitches: [63], finger: 3, voiceAudio: V + "f3_Eb.wav", cross: null },
+        { pitches: [65], finger: 2, voiceAudio: V + "f2_F.wav", cross: null },
+        { pitches: [67], finger: 1, voiceAudio: V + "f1_G.wav", cross: null },
+        { pitches: [68], finger: 4, voiceAudio: V + "f4_Ab.wav", cross: null },
+        { pitches: [68], finger: 4, voiceAudio: V + "now_backwards.wav", cross: null },
+        { pitches: [66], finger: 4, voiceAudio: V + "f4_Gb.wav", cross: CROSS_OVER },
+        { pitches: [64], finger: 1, voiceAudio: V + "f1_Fb.wav", cross: null },
+        { pitches: [63], finger: 3, voiceAudio: V + "f3_Eb.wav", cross: null },
+        { pitches: [61], finger: 2, voiceAudio: V + "f2_Db.wav", cross: null },
+        { pitches: [59], finger: 1, voiceAudio: V + "f1_Cb.wav", cross: null },
+        { pitches: [58], finger: 2, voiceAudio: V + "f2_Bb.wav", cross: null },
+        { pitches: [56], finger: 3, voiceAudio: V + "f3_Ab.wav", cross: null },
+      ],
+    },
+    {
+      id: "together",
+      announceAudio: V + "together.wav",
+      clef: "grand",
+      slots: [
+        { pitches: [68, 56], fingers: [2, 3], voiceAudio: V + "note_Ab.wav", cross: null },
+        { pitches: [70, 58], fingers: [3, 2], voiceAudio: V + "note_Bb.wav", cross: null },
+        { pitches: [71, 59], fingers: [1, 1], voiceAudio: V + "note_Cb.wav", cross: CROSS_UNDER_RIGHT },
+        { pitches: [73, 61], fingers: [2, 4], voiceAudio: V + "note_Db.wav", cross: CROSS_OVER_LEFT },
+        { pitches: [75, 63], fingers: [3, 3], voiceAudio: V + "note_Eb.wav", cross: null },
+        { pitches: [77, 65], fingers: [1, 2], voiceAudio: V + "note_F.wav", cross: null },
+        { pitches: [79, 67], fingers: [2, 1], voiceAudio: V + "note_G.wav", cross: null },
+        { pitches: [80, 68], fingers: [3, 4], voiceAudio: V + "note_Ab.wav", cross: null },
+        { pitches: [80, 68], fingers: [3, 4], voiceAudio: V + "now_backwards.wav", cross: null },
+        { pitches: [78, 66], fingers: [2, 4], voiceAudio: V + "note_Gb.wav", cross: CROSS_UNDER_LEFT },
+        { pitches: [76, 64], fingers: [1, 1], voiceAudio: V + "note_Fb.wav", cross: null },
+        { pitches: [75, 63], fingers: [3, 3], voiceAudio: V + "note_Eb.wav", cross: null },
+        { pitches: [73, 61], fingers: [2, 2], voiceAudio: V + "note_Db.wav", cross: null },
+        { pitches: [71, 59], fingers: [1, 1], voiceAudio: V + "note_Cb.wav", cross: CROSS_OVER_RIGHT },
+        { pitches: [70, 58], fingers: [3, 2], voiceAudio: V + "note_Bb.wav", cross: null },
+        { pitches: [68, 56], fingers: [2, 3], voiceAudio: V + "note_Ab.wav", cross: null },
+      ],
+    },
+  ],
+};
+
 const SCALES = {
   "C Major": C_MAJOR,
   "D Major": D_MAJOR,
@@ -6594,4 +7013,8 @@ const SCALES = {
   "Eb Minor": E_FLAT_NATURAL_MINOR,
   "Eb Harmonic Minor": E_FLAT_HARMONIC_MINOR,
   "Eb Melodic Minor": E_FLAT_MELODIC_MINOR,
+  "Ab Major": A_FLAT_MAJOR,
+  "Ab Minor": A_FLAT_NATURAL_MINOR,
+  "Ab Harmonic Minor": A_FLAT_HARMONIC_MINOR,
+  "Ab Melodic Minor": A_FLAT_MELODIC_MINOR,
 };

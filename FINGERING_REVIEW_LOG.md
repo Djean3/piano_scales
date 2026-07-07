@@ -209,3 +209,82 @@ of G♭ major — also enharmonic with D♯ minor, book p.60). Compare
 against `E_FLAT_MAJOR`, `E_FLAT_NATURAL_MINOR`, `E_FLAT_HARMONIC_MINOR`,
 `E_FLAT_MELODIC_MINOR` in `data.js`. Pay particular attention to LH
 degrees 5-8 (Bb/C-or-Cb/D-or-Db/Eb) in all four scale types.
+
+---
+
+## Ab Major + Ab Minor family (all 4 types) — flagged 2026-07-07
+
+**Process used:** same high-DPI pixel-reading approach as the E♭
+family. Rendered "Key of A♭ Major" (book p.40) and "Key of A♭ Minor"
+(book p.76) at 900-1000 DPI, cropped to individual measures, read each
+notehead's fingering number directly. This key's page was unusually
+generous with detail — it spells out extra facts beyond the usual
+one-line box, quoted below — so more of this key's fingering rests on
+directly-stated text than on repeat-cell guessing, compared to earlier
+flagged keys.
+
+**Confirmed directly from the book (explicit text, high confidence):**
+- General box (applies to Major, and to Harmonic/Melodic-ascending
+  Minor): LH 4th finger on D♭ (4th degree). RH 4th finger on B♭ (2nd
+  degree), **with a footnote**: "In the 1st octave, RH 3 or 4 may be
+  used on B♭ — RH 4 thereafter." This app always plays a single (1st)
+  octave, so it correctly uses the footnote's 1st-octave alternate
+  (finger 3 on B♭), not the box's headline "4" — confirmed directly
+  from the score, where the written-out fingering actually shows "3"
+  with "(4)" as a small parenthetical alternate above it.
+- Natural minor gets its own explicit override, printed directly above
+  its own system: "LH 4th finger on G♭ (7th degree)" — a different
+  degree than the general box's D♭/4th-degree fact. The book adds a
+  plain-English callout right under that system: **"This is the only
+  scale where the LH fingering in the natural minor differs from the
+  harmonic minor"** — i.e. every other minor key in the whole method
+  book has natural and harmonic minor sharing one LH shape; A♭ is
+  the sole exception, and the book flags it as such itself.
+- Melodic minor gets its own explicit override too: "LH 4th finger on
+  D♭ ascending, G♭ descending" — meaning melodic minor's LH is a
+  genuine hybrid, using the major/harmonic shape going up and the
+  natural-minor shape coming back down. This is modeled in `data.js`
+  by giving A♭ Melodic Minor's LH section a different ascending vs.
+  descending finger source (the generator script's usual
+  mirror-the-ascending-array shortcut does not apply to this one key).
+
+**Confirmed by direct pixel reading (not just the summary/override
+text):**
+- RH ascending, all four scale types share one shape (only pitches
+  differ by form): A♭(2) B♭(3) C/C♭(1) D♭(2) E♭(3) F/F♭(1) G/G♭(2)
+  A♭(3). Thumb lands on the two "white-key-equivalent" degrees (C or
+  C♭≡B, and F or F♭≡E) — consistent with the general principle (seen
+  in every irregular key so far) that thumb placement favors the
+  white keys of a scale where possible.
+- LH ascending, Major/Harmonic form: A♭(3) B♭(2) C/C♭(1) D♭(4) — first
+  four notes read directly, matching the box fact exactly (D♭ = 4th
+  degree = finger 4).
+- LH ascending, Natural Minor form: A♭(3) B♭(2) C♭(1) — first three
+  notes read directly; the crossing to finger 4 was not legible at
+  the exact note in this particular pixel pass, but its DEGREE
+  position is separately confirmed by the printed override text
+  (G♭ = 7th degree = finger 4), which is what the data actually uses.
+
+**Reconstructed (not pixel-confirmed) — used for building the data:**
+- LH degrees 4-7 for the Natural Minor shape (`[3,2,1,2,3,1,4,3]`) were
+  built by analogy to the RH shape's own two-thumb-crossing structure
+  (thumb at the same two relative positions, C♭-equivalent and
+  F♭-equivalent) rather than read note-by-note off the page — this
+  satisfies the one confirmed fact (G♭ = finger 4) but the notes
+  around it (E♭, F♭ specifically) are the least certain values in
+  this family.
+- Harmonic and Melodic minor's shared portions (RH entirely; LH's
+  ascending-major-shape / descending-natural-shape halves) were
+  assumed rather than independently re-verified beyond confirming the
+  book's override sentences quoted above.
+- A♭ Natural/Harmonic Minor's key signature (7 flats: B♭, E♭, A♭, D♭,
+  G♭, C♭, F♭) is the first in the app to need an F♭ spelling — new
+  voice files `f1_Fb.wav`, `f2_Fb.wav`, `note_Fb.wav` were generated.
+
+**To manually re-verify later:** Alfred's Basic Piano Library, "Key of
+A♭ Major" (book p.40) and "Key of A♭ Minor" (book p.76, relative minor
+of C♭ major — also enharmonic with G♯ minor, book p.58). Compare
+against `A_FLAT_MAJOR`, `A_FLAT_NATURAL_MINOR`, `A_FLAT_HARMONIC_MINOR`,
+`A_FLAT_MELODIC_MINOR` in `data.js`. Pay particular attention to LH
+degrees 4-7 (E♭/F♭/G♭) in the Natural Minor (and Melodic Minor's
+descending pass, which reuses the Natural Minor shape).
