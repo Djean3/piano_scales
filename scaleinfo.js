@@ -6,20 +6,28 @@ const ScaleInfo = (() => {
     return ((midi % 12) + 12) % 12;
   }
 
+  // Returns [{midi, name}] for the ascending run — name comes from the
+  // slot's voiceAudio filename (spelling-aware: "Eb", "F#", etc.) via the
+  // shared noteNameFromAudio() helper (defined in sheetmusic.js), falling
+  // back to the plain PC_LETTER table (no accidental) if a slot has no
+  // voice clip. Raw PC_LETTER can't tell Eb from D#, so it must not be
+  // used directly on scales that are flat-spelled (minor keys).
   function ascendingRun(slots) {
-    const out = [slots[0].pitches[0]];
+    const first = slots[0];
+    const out = [{ midi: first.pitches[0], name: noteNameFromAudio(first.voiceAudio) || PC_LETTER[pitchClass(first.pitches[0])] }];
     for (let i = 1; i < slots.length; i++) {
-      const p = slots[i].pitches[0];
-      if (p <= out[out.length - 1]) break;
-      out.push(p);
+      const slot = slots[i];
+      const p = slot.pitches[0];
+      if (p <= out[out.length - 1].midi) break;
+      out.push({ midi: p, name: noteNameFromAudio(slot.voiceAudio) || PC_LETTER[pitchClass(p)] });
     }
     return out;
   }
 
-  function intervalPattern(pitches) {
+  function intervalPattern(run) {
     const steps = [];
-    for (let i = 1; i < pitches.length; i++) {
-      const diff = pitches[i] - pitches[i - 1];
+    for (let i = 1; i < run.length; i++) {
+      const diff = run[i].midi - run[i - 1].midi;
       steps.push(diff === 2 ? "W" : diff === 1 ? "H" : String(diff));
     }
     return steps;
@@ -32,8 +40,8 @@ const ScaleInfo = (() => {
     const run = ascendingRun(rh.slots);
     const pattern = intervalPattern(run);
     const chromatic = pattern.length > 0 && pattern.every((s) => s === "H");
-    const notes = run.map((m) => PC_LETTER[pitchClass(m)]);
-    const tonicPc = pitchClass(run[0]);
+    const notes = run.map((n) => n.name);
+    const tonicPc = pitchClass(run[0].midi);
 
     const desc = document.createElement("p");
     desc.className = "scale-info-desc";
@@ -65,18 +73,27 @@ const ScaleInfo = (() => {
 
   function renderKeyboard(rh, lh, run, tonicPc) {
     const highlighted = new Set();
-    ascendingRun(rh.slots).forEach((m) => highlighted.add(m));
-    if (lh) ascendingRun(lh.slots).forEach((m) => highlighted.add(m));
+    const nameByPc = {};
+    ascendingRun(rh.slots).forEach((n) => {
+      highlighted.add(n.midi);
+      const pc = pitchClass(n.midi);
+      if (!(pc in nameByPc)) nameByPc[pc] = n.name;
+    });
+    if (lh) ascendingRun(lh.slots).forEach((n) => {
+      highlighted.add(n.midi);
+      const pc = pitchClass(n.midi);
+      if (!(pc in nameByPc)) nameByPc[pc] = n.name;
+    });
 
     const degreeByPc = {};
-    run.forEach((m, i) => {
-      const pc = pitchClass(m);
+    run.forEach((n, i) => {
+      const pc = pitchClass(n.midi);
       if (!(pc in degreeByPc)) degreeByPc[pc] = i + 1;
     });
 
     function keyContent(midi) {
       const pc = pitchClass(midi);
-      return `<span class="key-degree">${degreeByPc[pc]}</span><span class="key-note">${PC_LETTER[pc]}</span>`;
+      return `<span class="key-degree">${degreeByPc[pc]}</span><span class="key-note">${nameByPc[pc] || PC_LETTER[pc]}</span>`;
     }
 
     const board = document.createElement("div");
@@ -170,11 +187,15 @@ const ScaleInfo = (() => {
       });
     }
 
-    // Page 3 — Modes
-    if (!chromatic && run.length >= 7) {
+    // Page 3 — Modes (only for scales that rotate through the standard
+    // 7 diatonic modes -- major and natural minor. Harmonic/melodic minor
+    // have their own, differently-named mode families, so scale.info.modeRotation
+    // is left unset for those and this page is skipped rather than showing
+    // wrong mode names.)
+    if (!chromatic && run.length >= 7 && scale.info.modeRotation != null) {
       pages.push({
         title: "Modes",
-        build() { return buildModesPage(run); },
+        build() { return buildModesPage(run, scale.info.modeRotation); },
       });
     }
 
@@ -263,15 +284,15 @@ const ScaleInfo = (() => {
 
   function buildChordsPage(run) {
     const div = document.createElement("div");
-    const pitches = run.slice(0, 7);
+    const degrees = run.slice(0, 7);
     const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII"];
 
     const grid = document.createElement("div");
     grid.className = "theory-chord-grid";
 
-    pitches.forEach((root, d) => {
-      let third = pitches[(d + 2) % 7];
-      let fifth  = pitches[(d + 4) % 7];
+    degrees.forEach(({ midi: root, name: noteName }, d) => {
+      let third = degrees[(d + 2) % 7].midi;
+      let fifth  = degrees[(d + 4) % 7].midi;
       while (third <= root)  third += 12;
       while (fifth  <= third) fifth += 12;
 
@@ -287,7 +308,6 @@ const ScaleInfo = (() => {
         quality = "dim"; roman = ROMAN[d].toLowerCase() + "°"; qualLabel = "°";
       }
 
-      const noteName = PC_LETTER[((root % 12) + 12) % 12];
       const chip = document.createElement("div");
       chip.className = `theory-chord theory-chord-${quality}`;
       chip.innerHTML =
@@ -305,20 +325,23 @@ const ScaleInfo = (() => {
     return div;
   }
 
-  function buildModesPage(run) {
+  // rotation: index into MODE_NAMES/QUALITY/VIBE that this scale's own
+  // 1st degree corresponds to (0 for major/Ionian-rooted scales, 5 for
+  // natural minor since Aeolian is the major scale's 6th mode).
+  function buildModesPage(run, rotation) {
     const div = document.createElement("div");
     const list = document.createElement("div");
     list.className = "theory-mode-list";
 
-    run.slice(0, 7).forEach((pitch, i) => {
-      const noteName = PC_LETTER[((pitch % 12) + 12) % 12];
+    run.slice(0, 7).forEach(({ name: noteName }, i) => {
+      const m = (rotation + i) % 7;
       const row = document.createElement("div");
       row.className = "theory-mode-row";
       row.innerHTML =
         `<span class="mode-note">${noteName}</span>` +
-        `<span class="mode-name">${MODE_NAMES[i]}</span>` +
-        `<span class="mode-quality mode-${MODE_QUALITY[i]}">${MODE_QUALITY[i]}</span>` +
-        `<span class="mode-vibe">${MODE_VIBE[i]}</span>`;
+        `<span class="mode-name">${MODE_NAMES[m]}</span>` +
+        `<span class="mode-quality mode-${MODE_QUALITY[m]}">${MODE_QUALITY[m]}</span>` +
+        `<span class="mode-vibe">${MODE_VIBE[m]}</span>`;
       list.appendChild(row);
     });
 
@@ -372,8 +395,7 @@ const ScaleInfo = (() => {
     const div = document.createElement("div");
     const list = document.createElement("div");
     list.className = "theory-degree-list";
-    run.slice(0, 7).forEach((pitch, i) => {
-      const noteName = PC_LETTER[((pitch % 12) + 12) % 12];
+    run.slice(0, 7).forEach(({ name: noteName }, i) => {
       const row = document.createElement("div");
       row.className = "theory-degree-row";
       row.innerHTML =
@@ -393,8 +415,7 @@ const ScaleInfo = (() => {
     const row = document.createElement("div");
     row.className = "theory-penta-row";
     const inSet = new Set(penta.indices);
-    run.slice(0, 7).forEach((pitch, i) => {
-      const noteName = PC_LETTER[((pitch % 12) + 12) % 12];
+    run.slice(0, 7).forEach(({ name: noteName }, i) => {
       const chip = document.createElement("span");
       chip.className = `penta-note ${inSet.has(i) ? "in" : "out"}`;
       chip.textContent = noteName;
