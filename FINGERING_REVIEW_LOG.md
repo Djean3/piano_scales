@@ -11,6 +11,39 @@ reconstructed, and the specific reasoning/evidence used.
 
 ---
 
+## Modes (Dorian/Phrygian/Lydian/Mixolydian/Locrian) for all 12 roots — added 2026-07-07
+
+Not a fingering question — the book doesn't cover modes at all, only
+major/natural/harmonic/melodic minor. Each mode's fingering reuses its
+OWN root's already-confirmed major-scale hand shape verbatim (both
+hands, same finger-per-degree-index and same crossing positions),
+following the precedent already set for C/D/G/A/E's modes earlier in
+this project (which reuse that root's own major-scale scaffold rather
+than the fingering of whichever "parent" major scale the mode's notes
+technically belong to). This is a deliberate, reasonable simplification
+— real-world fingering for, say, B♭ Locrian might reasonably differ
+from B♭ Major's, but there is no source to verify it against, and
+reusing the confirmed shape keeps the physical hand position consistent
+with the rest of that root's material.
+
+**Enharmonic spelling for exotic mode/root combinations:** several
+mode+root combinations have a theoretically "correct" diatonic spelling
+that requires a double-flat or double-sharp (e.g. E♭ Locrian's parent
+is enharmonically F♭ major, whose own 4th degree would be B𝄫). Wrote a
+small spelling algorithm (one letter per scale degree, computing the
+needed accidental) that automatically falls back to the simplest
+single-accidental/natural enharmonic spelling whenever a double
+accidental would otherwise be required — e.g. E♭ Locrian's 5th degree
+is spelled "A" rather than "B𝄫". This mirrors the same practical-over-
+theoretical precedent already established for F♯ major's E♯→F and the
+user-approved Db-minor→C#-minor substitution. Affected combinations:
+E♭ Locrian, A♭ Phrygian, A♭ Locrian, D♭ Phrygian, D♭ Locrian (9 total
+degree substitutions across these 5 scales — see
+`gen_modes_flats.py`-style derivation in chat history for the full list
+if verifying by hand later).
+
+---
+
 ## F# Major + F# Minor family (all 4 types) — flagged 2026-07-07
 
 **Confirmed directly from the book (box text, high confidence):**
