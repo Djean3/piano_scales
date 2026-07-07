@@ -288,3 +288,90 @@ against `A_FLAT_MAJOR`, `A_FLAT_NATURAL_MINOR`, `A_FLAT_HARMONIC_MINOR`,
 `A_FLAT_MELODIC_MINOR` in `data.js`. Pay particular attention to LH
 degrees 4-7 (E♭/F♭/G♭) in the Natural Minor (and Melodic Minor's
 descending pass, which reuses the Natural Minor shape).
+
+---
+
+## Db Major + "Db Minor" family (all 4 types) — flagged 2026-07-07
+
+**Naming decision (confirmed with the user, not a fingering question):**
+True D♭ minor requires 8 flats including a double-flat (B𝄫) and is
+never used in real sheet music. Per the user's explicit choice, the
+"Db" + "Minor"/"Harmonic Minor"/"Melodic Minor" dropdown combinations
+are built using C♯ minor's practical sharp spelling instead (same
+pitches, sane notation) — the dropdown still shows "Db", but the notes
+underneath are spelled with sharps. This mirrors what every real piano
+method book and lead sheet actually does.
+
+**Process used for Db Major:** same high-DPI pixel-reading approach as
+prior flat keys. Rendered "Key of D♭ Major" (book p.42) at 900-1200 DPI.
+
+**Confirmed directly from the book (Db Major, high confidence):**
+- Box: LH 4th finger on G♭ (4th degree). RH 4th finger on B♭ (6th
+  degree). No footnote/exception on this page, unlike A♭ and B♭.
+- Pixel-confirmed RH start: D♭(2) E♭(3) F(1) — thumb lands on F,
+  the scale's only "early" white key, same general principle seen in
+  every flat key so far (thumb prefers white keys where possible).
+- Pixel-confirmed LH start: D♭(3) E♭(2) F(1) G♭(4) — matches the box
+  fact exactly (G♭ = 4th degree = finger 4), and matches the same
+  repeat-cell shape already confirmed for E♭ and A♭ major's LH.
+
+**Reconstructed for Db Major (not pixel-confirmed):**
+- RH degrees 3-7 (`[2,3,1,2,3,4,1,2]`, i.e. G♭=2, A♭=3, B♭=4, C=1,
+  D♭=2) were not cleanly legible past the confirmed opening three
+  notes — several crops gave conflicting note-to-beam alignments. Built
+  by placing the box-confirmed B♭=4 at its correct degree, then filling
+  in a standard ascending/thumb-crossing pattern around it (matching
+  the same construction method that worked for every other flat key).
+- LH degrees 4-7 (`[3,2,1,4]` repeating a second time) assumed to
+  mirror E♭/A♭ major's own confirmed repeat-cell shape; the exact
+  final note is the least certain value, per the same recurring
+  last-note engraving ambiguity noted in every prior flagged key.
+
+**Process used for "Db Minor" (C# minor spelling):** rendered "Key of
+C♯ Minor" (book p.56, relative minor of E major) at 1000 DPI.
+
+**Confirmed directly from the book (C♯ Minor, high confidence):**
+- Box: LH 4th finger on F♯ (4th degree). RH 4th finger on D♯ (2nd
+  degree), **with the same kind of footnote seen on A♭ major**: "In
+  the 1st octave, RH 3 or 4 may be used on D♯ — RH 4 thereafter." This
+  app is always a single (1st) octave, so it correctly uses the 1st-
+  octave alternate (finger 3), pixel-confirmed directly in the score.
+- Melodic minor gets its own override, printed above its own system:
+  "RH 4th finger on A♯ ascending, D♯ descending" — a genuine RH
+  ascending/descending hybrid (the mirror image of A♭ major's LH
+  hybrid — same book, same trick, opposite hand).
+- Pixel-confirmed LH shape matches D♭ major's own LH exactly (3,2,1,4
+  repeat-cell, F♯ = 4th degree = finger 4) — natural and harmonic
+  minor were NOT separately called out as differing here (unlike A♭),
+  so both use this one LH shape.
+
+**Reconstructed / simplified for "Db Minor" (not pixel-confirmed, or
+deliberately simplified):**
+- RH natural/harmonic minor shape (`[2,3,1,2,3,1,2,3]`) reuses the
+  exact repeat-cell already confirmed for A♭ major's RH, since the one
+  box fact available (D♯ = 2nd degree = alt-finger-3) lines up at the
+  same position in that shape.
+- Melodic minor's RH ascending/descending hybrid was **deliberately
+  simplified to one consistent shape** (reusing the natural/harmonic
+  shape for both directions) rather than modeling the book's own
+  distinct "A♯ ascending / D♯ descending" crossing points. The app's
+  cross-cue system only supports one crossing marker per direction, so
+  faithfully reproducing two different crossing points per direction
+  wasn't a clean fit — this is a real, acknowledged simplification of
+  the fingering shape, not just an unread pixel. Note-for-note pitches
+  are still fully correct either way; only the finger-crossing cue
+  placement is simplified.
+- Harmonic minor's raised 7th (B♯) is spelled as "C" natural, and
+  melodic minor's raised 6th uses "A♯" as spelled directly in the book
+  — following this app's existing precedent of preferring a plain
+  enharmonic over a rare double-accidental-adjacent spelling (same
+  choice already made for F♯ major/minor's own raised-7th note, E♯→F).
+
+**To manually re-verify later:** Alfred's Basic Piano Library, "Key of
+D♭ Major" (book p.42, enharmonic with C♯ major, p.32) and "Key of C♯
+Minor" (book p.56, relative minor of E major). Compare against
+`D_FLAT_MAJOR`, `D_FLAT_NATURAL_MINOR`, `D_FLAT_HARMONIC_MINOR`,
+`D_FLAT_MELODIC_MINOR` in `data.js`. Pay particular attention to D♭
+Major's RH degrees 3-7, and to whether Melodic Minor's RH crossing
+points should be split into two distinct cross-cues instead of the
+current simplified single shape.
