@@ -2,7 +2,11 @@
 // piano via Tone.Sampler) and voice/cue clips (Tone.Player). Voice/cue clips
 // play at fixed real-world duration; only their trigger time scales with tempo.
 
-const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+// Root-note dropdown labels. Uses whichever spelling this app's own scales
+// actually use for each chromatic root (F# rather than Gb; Bb/Eb/Ab/Db
+// rather than A#/D#/G#/C#) -- these are dropdown values, independent of the
+// per-note accidental spelling used inside a scale's own voice clips.
+const NOTE_NAMES = ["C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"];
 function midiToNote(midi) {
   return `${NOTE_NAMES[midi % 12]}${Math.floor(midi / 12) - 1}`;
 }

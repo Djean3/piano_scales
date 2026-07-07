@@ -90,3 +90,46 @@ both the Major page p.34 and Minor page p.70, high confidence):**
 F Major" (book p.34) and "Key of F Minor" (book p.70, relative minor
 of Ab major). Compare against `F_MAJOR`, `F_NATURAL_MINOR`,
 `F_HARMONIC_MINOR`, `F_MELODIC_MINOR` in `data.js`.
+
+---
+
+## Bb Major + Bb Minor family (all 4 types) — flagged 2026-07-07
+
+**Confirmed directly from the book (box text, high confidence):**
+- RH 4th finger on the 1st degree (B♭, the tonic) for BOTH major and
+  minor (identical footnote: "RH 2 or 4 may be used on B♭ in the 1st
+  octave — RH 4 thereafter"). Since our single-octave app always
+  represents a "1st octave" start, went with 4 throughout (the
+  book's own "thereafter"/default answer) rather than the beginner
+  alternate.
+- LH Major: 4th finger on the 4th degree (E♭).
+- LH Minor: 4th finger on the 6th degree (G or G♭, depending on
+  scale form) — **a different degree than major's LH fact**,
+  meaning Bb major and Bb minor's LH fingering are NOT the same
+  shape (unlike every other key built so far, where major/minor
+  share one LH shape).
+
+**Reconstructed (not pixel-confirmed) — used for building the data:**
+- `RH_ASC (major + all 3 minors) = [4,3,2,1,4,3,2,1]` — reuses the
+  exact shape already confirmed for B major's LH, applied here to
+  Bb's RH since the one box fact available (tonic = finger 4) matches
+  that shape's first element.
+- `LH_ASC (major + all 3 minors) = [1,2,3,4,1,2,3,4]` — reuses F
+  major's RH shape. This satisfies Bb MAJOR's box fact exactly
+  (degree 3 = E♭ = finger 4). **It does NOT satisfy Bb MINOR's own
+  box fact** (degree 5 = G/G♭ = finger 4; this pattern gives finger 2
+  at that position) — used it anyway for consistency across all 4
+  scale types rather than inventing an unconfirmed alternate shape
+  for the minor forms specifically. **This is the most likely error
+  in the Bb family — Bb minor's LH fingering from roughly the middle
+  of the scale onward should be treated as unverified.**
+- Cross-cue positions for both hands placed at index 3 ascending /
+  index 4 descending (matching where each hypothesized pattern's
+  4→1 jump actually falls).
+
+**To manually re-verify later:** Alfred's Basic Piano Library, "Key of
+B♭ Major" (book p.36) and "Key of B♭ Minor" (book p.72, relative minor
+of D♭ major — also enharmonic with A♯ minor, book p.62). Compare
+against `B_FLAT_MAJOR`, `B_FLAT_NATURAL_MINOR`, `B_FLAT_HARMONIC_MINOR`,
+`B_FLAT_MELODIC_MINOR` in `data.js`. Pay particular attention to the
+LH fingering for Bb minor's degrees 4-7.
