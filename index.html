@@ -862,6 +862,46 @@
   html[data-theme="hc"] .stat-box {
     background: #0a0a0a; border: 1.5px solid rgba(0,255,136,0.28);
   }
+
+  /* ── About This Build ── */
+  .about-card { margin-top: 4px; }
+  .about-body { font-size: 0.85rem; }
+  .about-heading {
+    margin: 16px 0 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .about-heading:first-child { margin-top: 0; }
+  .about-text {
+    margin: 0 0 4px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .about-text strong { color: var(--text); font-weight: 600; }
+  .about-list {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.55;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .about-list strong { color: var(--text); font-weight: 600; }
+  .about-list li { padding-left: 2px; }
+  .about-body code {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 0.8em;
+    color: var(--text);
+  }
 </style>
 </head>
 <body>
@@ -1126,6 +1166,65 @@
     <div id="sheet-music"></div>
   </div>
 
+  <!-- About this build -->
+  <details class="card about-card">
+    <summary><span class="summary-label">About This Build</span></summary>
+    <div class="about-body">
+
+      <h4 class="about-heading">What's included</h4>
+      <p class="about-text">
+        All 12 chromatic keys (C, D♭, D, E♭, E, F, F♯, G, A♭, A, B♭, B), each with
+        Major, Natural Minor, Harmonic Minor, and Melodic Minor — 48 scales total.
+        Every key also has its 5 other diatonic modes (Dorian, Phrygian, Lydian,
+        Mixolydian, Locrian), for 60 more — <strong>108 scales in all.</strong>
+        Fingering for the 7 "easy" keys (C, D, G, A, E plus their modes) follows the
+        standard scaffold taught in most method books. The other 7 keys (B, F♯, F,
+        B♭, E♭, A♭, D♭) have irregular fingering that was read directly from
+        Alfred's Basic Piano Library rather than assumed.
+      </p>
+
+      <h4 class="about-heading">Key decisions</h4>
+      <ul class="about-list">
+        <li>
+          <strong>"Db Minor" plays C♯ minor's notes.</strong> True D♭ minor needs
+          8 flats including a double-flat (B𝄫) and is never actually written or
+          played that way — every musician uses the enharmonic equivalent, C♯
+          minor, instead. Selecting D♭ + Minor/Harmonic Minor/Melodic Minor in the
+          dropdown plays C♯ minor's notes (same pitches, sane spelling).
+        </li>
+        <li>
+          <strong>A few mode notes are spelled with a practical enharmonic instead
+          of the "textbook correct" one.</strong> Some mode/root combinations
+          (e.g. E♭ Locrian) technically need a double-flat or double-sharp to spell
+          perfectly. In those spots the note is respelled to whatever a musician
+          would actually write (for example E♭ Locrian's 5th degree is shown as
+          "A" rather than a theoretical "B𝄫"). Same idea as F♯ major already
+          spelling its 7th degree "F" instead of "E♯".
+        </li>
+        <li>
+          <strong>Modes reuse each root's own confirmed major-scale fingering.</strong>
+          e.g. B♭ Dorian uses the same hand shape as B♭ Major, not the fingering of
+          whichever different major scale those notes technically belong to. This
+          keeps the physical hand position consistent for a given root across all
+          of its scale types.
+        </li>
+      </ul>
+
+      <h4 class="about-heading">What might not be 100% right</h4>
+      <p class="about-text">
+        Note <em>pitches</em> and scale names are correct throughout — that part
+        was checked carefully. The part that's less certain is exactly which
+        <em>finger number</em> is shown/spoken at a few spots in the irregular keys
+        (B, F♯, F, B♭, E♭, A♭, D♭) and their modes, where the printed fingering in
+        the source book was hard to read at certain notes. Best guesses were made
+        using standard fingering logic and flagged for later double-checking —
+        it would only ever be a wrong finger number, never a wrong note. Full
+        detail on exactly which notes are flagged, and why, is in
+        <code>FINGERING_REVIEW_LOG.md</code> in the project repo.
+      </p>
+
+    </div>
+  </details>
 
 </main>
 
