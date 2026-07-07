@@ -133,3 +133,79 @@ of D♭ major — also enharmonic with A♯ minor, book p.62). Compare
 against `B_FLAT_MAJOR`, `B_FLAT_NATURAL_MINOR`, `B_FLAT_HARMONIC_MINOR`,
 `B_FLAT_MELODIC_MINOR` in `data.js`. Pay particular attention to the
 LH fingering for Bb minor's degrees 4-7.
+
+---
+
+## Eb Major + Eb Minor family (all 4 types) — flagged 2026-07-07
+
+**Process used for this key (more pixel-verification than earlier
+flagged keys, since the book's own layout was clearer here):** rendered
+the "Key of E♭ Major" page (book p.38) and the "Key of E♭ Minor" page
+(book p.74) at 600-900 DPI, then cropped down to individual measures
+and re-cropped further whenever a finger number was ambiguous, reading
+each notehead's fingering number directly off the page rather than
+guessing from general scale-fingering conventions. Degrees confirmed
+this way are marked below; degrees NOT directly legible (either cut
+off by a crop boundary or ambiguous at max zoom) were filled in using
+the same reasonable-reconstruction approach as the other flagged keys —
+matching the confirmed notes on either side and, where a scale's
+32-note passage repeats a 4-note fingering cell (a pattern confirmed
+in every other irregular key built so far), assuming the cell repeats.
+
+**Confirmed directly from the book (box text, high confidence):**
+- E♭ Major: LH 4th finger on A♭ (4th degree). RH 4th finger on B♭
+  (5th degree).
+- E♭ Minor (natural/harmonic/melodic all share one box on p.74): LH
+  4th finger on G♭ (3rd degree) — a DIFFERENT degree than major's LH
+  fact (4th degree), meaning E♭ major and minor do NOT share one LH
+  shape (same situation as the B♭ family). RH 4th finger on B♭ (5th
+  degree) — identical to major's RH fact, so RH is shared across all
+  four E♭ scale types.
+
+**Confirmed by direct pixel reading (not just the summary box):**
+- RH ascending, both major and minor forms: E♭(2) F(1) G/G♭(2) A♭(3)
+  B♭(4) C/C♭(1) D/D♭(2) E♭(3) — read directly off the "Parallel motion
+  in octaves" system for both keys; the two systems were visually
+  identical in structure, only the pitches differ (G vs G♭, C vs C♭,
+  D vs D♭ depending on major/natural-minor). This means RH actually
+  crosses the thumb under TWICE per octave (right at the start, F=1,
+  and again mid-scale at C/C♭=1) — a different shape than every other
+  irregular key built so far (F/B♭/F♯/B all only cross once). Only
+  the SECOND crossing (matching the box's B♭/5th-degree fact) gets a
+  cross-cue in the app; the first (very early) thumb-tuck is not cued,
+  consistent with how the app only ever cues one crossing per octave.
+- LH ascending, E♭ Major: E♭(3) F(2) G(1) A♭(4) — first four notes
+  read directly and clearly, matching the box fact exactly (A♭=4th
+  degree=finger 4).
+- LH ascending, E♭ Minor (applies to natural/harmonic/melodic — the
+  3rd degree stays G♭ in all three forms): E♭(2) F(1) G♭(4) — first
+  three notes read directly, matching the box fact exactly (G♭=3rd
+  degree=finger 4). Note this is a shorter lead-in than major's (LH
+  minor crosses to finger 4 one note earlier than LH major does).
+
+**Reconstructed (not pixel-confirmed) — used for building the data:**
+- LH degrees 5-8 for BOTH major and minor were not clearly legible at
+  any crop/zoom level tried. Filled in by repeating the confirmed
+  4-note cell a second time: major = `[3,2,1,4,3,2,1,4]`, minor =
+  `[2,1,4,3,2,1,4,3]`. This matches the repeating-cell shape seen in
+  every other irregular key's LH fingering, but the exact finger on
+  the final (octave) note in particular is the least certain single
+  value in this whole family.
+- Harmonic and melodic minor were not independently pixel-checked
+  beyond confirming the book's numbers visually matched natural
+  minor's system note-for-note (aside from the raised degree(s)) —
+  assumed to share natural minor's exact fingering shape, consistent
+  with how every other key in this project has handled harmonic/
+  melodic minor relative to natural minor.
+- E♭ Natural/Harmonic Minor's 6th scale degree is spelled C♭ (not B)
+  to match the book's own 6-flat key signature for E♭ minor (B♭, E♭,
+  A♭, D♭, G♭, C♭) — this is the first key in the app to need a C♭ or
+  F♭ spelling. New voice files `f1_Cb.wav`, `f4_Gb.wav`, `note_Cb.wav`
+  were generated for this.
+
+**To manually re-verify later:** Alfred's Basic Piano Library, "Key of
+E♭ Major" (book p.38) and "Key of E♭ Minor" (book p.74, relative minor
+of G♭ major — also enharmonic with D♯ minor, book p.60). Compare
+against `E_FLAT_MAJOR`, `E_FLAT_NATURAL_MINOR`, `E_FLAT_HARMONIC_MINOR`,
+`E_FLAT_MELODIC_MINOR` in `data.js`. Pay particular attention to LH
+degrees 5-8 (Bb/C-or-Cb/D-or-Db/Eb) in all four scale types.
