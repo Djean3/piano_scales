@@ -114,19 +114,32 @@ const PianoRoll = (() => {
   }
 
   // notes: array of { midi, finger }
+  // Every call is a fresh note-on (including a same-pitch retrigger, e.g. the
+  // "now backwards" slot repeating the top note) -- always removes the "hit"
+  // flash class and forces a reflow before re-adding it, so the flash
+  // animation restarts even when the same key stays highlighted across two
+  // consecutive events. Without the reflow, remove+re-add happens within one
+  // synchronous call and the browser never paints the "no class" frame, so a
+  // repeated note on the same key looked like nothing happened.
   function update(notes) {
     if (!rootEl) return;
     rootEl.querySelectorAll(".piano-key.active").forEach((key) => {
-      key.classList.remove("active");
+      key.classList.remove("active", "hit");
       key.querySelector(".key-finger").textContent = "";
       key.querySelector(".key-note").textContent = "";
     });
+    const keys = [];
     for (const note of notes || []) {
       const key = rootEl.querySelector(`.piano-key[data-midi="${note.midi}"]`);
       if (!key) continue;
       key.classList.add("active");
       key.querySelector(".key-finger").textContent = note.finger != null ? note.finger : "";
       key.querySelector(".key-note").textContent = note.noteName || PC_LETTER[pitchClass(note.midi)];
+      keys.push(key);
+    }
+    if (keys.length) {
+      void rootEl.offsetWidth; // force reflow so the "hit" animation always restarts
+      keys.forEach((key) => key.classList.add("hit"));
     }
   }
 
